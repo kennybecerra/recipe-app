@@ -1,0 +1,23 @@
+.HeaderContainer {
+ display: flex;
+ justify-content: space-around;
+ align-items: center;
+ height: 15%;
+ border: 3px solid red;
+}
+
+
+.FormContainer {
+  display: inline-block;
+  width: 33%;
+}
+
+.TextField {
+  height: 60%;
+}
+
+
+.RecipeLogo {
+  width: 20px;
+}
+

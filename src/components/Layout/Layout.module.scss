@@ -1,0 +1,26 @@
+@import "../../sass/mixins.scss";
+
+.Container {
+  height: 95vh;
+  width: 95vw;
+  min-height: 30rem;
+  background-color: white;
+  box-shadow: 0 2rem 6rem 0.5rem rgba(101, 90, 86, 0.2);
+  border-radius: 6px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+
+  @include ResponsiveMobileFirst(tab) {
+    height: 90vh;
+    width: 90vw;
+    max-width: 120rem;
+  }
+
+  @include ResponsiveMobileFirst(tab-port) {
+    height: 85vh;
+    width: 70vw;
+    max-width: 120rem;
+  }
+}

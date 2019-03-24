@@ -1,13 +1,8 @@
 import React from "react";
-import classes from "./Layout.module.css"
-const layout = (props) => {
-
-  return (
-    <div className={classes.Container}>
-      {props.children}  
-    </div >
-    )
-
-}
+import "../../abstracts/mixins.scss";
+import classes from "./Layout.module.scss";
+const layout = props => {
+  return <div className={classes.Container}>{props.children}</div>;
+};
 
 export default layout;

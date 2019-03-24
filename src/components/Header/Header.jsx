@@ -1,31 +1,48 @@
-import React from 'react';
-import searchLogo from "../../assets/svg/search.svg";
-import recipeLogo from "../../assets/svg/recipe.svg";
-import classes from "./Header.module.css";
-const header = (props) => {
+import React from "react";
+import searchLogo from "../../assets/SVG/search.svg";
+import recipeLogo from "../../assets/SVG/recipe.svg";
+import classes from "./Header.module.scss";
 
+const header = props => {
   return (
     <div className={classes.HeaderContainer}>
+      <img
+        className={classes.RecipeLogo}
+        src={recipeLogo}
+        alt="knife and fork"
+      />
 
-      {/* <div className={classes.ImageContainer}>
-      </div> */}
-
-      <img className={classes.RecipeLogo} src={recipeLogo} alt="knife and fork image" />
-
-      <form action="" className={classes.FormContainer}>
-        <input type="text" className={classes.TextField} name="" id="" placeholder="Search over 1,000,000 recipes and more ...." />
-        <button className={classes.Button}>
-          <img src={searchLogo} alt="" />
-          <span>SEARCH</span>
+      <form
+        onSubmit={event => event.preventDefault()}
+        className={classes.FormContainer}
+      >
+        <input
+          type="text"
+          className={classes.FormContainer__TextField}
+          name=""
+          id=""
+          placeholder="Search over 1,000,000 recipes and more ...."
+        />
+        <button className={classes.FormContainer__ButtonField}>
+          <img
+            className={classes.FormContainer__ButtonField__Image}
+            src={searchLogo}
+            alt=""
+          />
+          <span className={classes.FormContainer__ButtonField__Text}>
+            SEARCH
+          </span>
         </button>
       </form>
 
       {/* <div className={classes.LikesContainer}></div> */}
-      <img className={classes.RecipeLogo} src={recipeLogo} alt="knife and fork image" />
+      <img
+        className={classes.RecipeLogo}
+        src={recipeLogo}
+        alt="knife and fork"
+      />
     </div>
-
   );
-
-}
+};
 
 export default header;

@@ -1,3 +1,10 @@
+@import "./sass/variables.scss";
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
 
 html {
   font-size: 62.5%;
@@ -12,7 +19,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-image: linear-gradient(to right bottom, #FBDB89, #F48982);
+  background-image: linear-gradient(to right bottom, $color-bg-1, $color-bg-2);
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100vh;

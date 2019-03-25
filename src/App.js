@@ -1,33 +1,45 @@
-import React, { Component } from 'react';
-import Layout from './components/Layout/Layout';
+import React, { Component } from "react";
+import Layout from "./components/Layout/Layout";
 import Header from "./components/Header/Header";
-import './App.css';
+import "./App.css";
+import Body from "./components/Body/Body";
+import axios from "axios";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchVal: ""
+    };
+  }
 
-  /* 
-   <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-  */
+  handleSearchSubmit = value => {
+    this.setState({
+      searchVal: value
+    });
+  };
+
+  componentDidUpdate() {
+    axios
+      .get(
+        `https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q${
+          this.state.searchVal
+        }`
+      )
+      .then(response => {
+        console.log("this is the response");
+        console.log(response);
+      })
+      .catch(err => {
+        console.log("There was an error", err);
+      });
+  }
 
   render() {
     return (
       <Layout>
-        <Header />
+        <Header handleSearch={this.handleSearchSubmit} />
+        <Body />
       </Layout>
     );
   }

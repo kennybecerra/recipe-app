@@ -3,7 +3,7 @@ import classes from "./Body.module.scss";
 const body = props => {
   return (
     <div className={classes.BodyContainer}>
-      <p>something</p>
+      <p>The body Container</p>
     </div>
   );
 };

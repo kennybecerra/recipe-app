@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import searchLogo from "../../assets/SVG/search.svg";
-import recipeLogo from "../../assets/SVG/recipe.svg";
+import searchLogo from "../../assets/svg/search.svg";
+import recipeLogo from "../../assets/svg/recipe.svg";
 import classes from "./Header.module.scss";
 
 class Header extends Component {

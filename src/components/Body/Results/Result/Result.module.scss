@@ -1,0 +1,38 @@
+.Container {
+  height: 100%;
+
+  flex: 0 0 150px;
+
+
+  display: flex;
+  flex-direction: column;
+  border: 3px solid brown;
+
+  &__ImageContainer {
+    width: 100%;
+    height: 65%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__Image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      //border-radius: 50%;
+    }
+  }
+
+  &__TextContainer {
+    width: 100%;
+    height: 35%;
+
+    border: 3px solid blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+}

@@ -9,21 +9,43 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchVal: ""
+      currentSearch: "",
+      loading: false,
+      results: []
     };
   }
 
   handleSearchSubmit = value => {
     this.setState({
-      searchVal: value
+      currentSearch: value,
+      loading: true
     });
+
+    axios
+      .get(
+        `https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q${
+        value
+        }`
+      )
+      .then(response => {
+        console.log("this is the response");
+        console.log(response.data);
+        this.setState({
+          results: response.data.recipes
+        })
+      })
+      .catch(err => {
+        console.log("There was an error", err);
+      });
+
   };
 
+  /*
   componentDidUpdate() {
     axios
       .get(
         `https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q${
-          this.state.searchVal
+        this.state.searchVal
         }`
       )
       .then(response => {
@@ -34,12 +56,13 @@ class App extends Component {
         console.log("There was an error", err);
       });
   }
+  */
 
   render() {
     return (
       <Layout>
         <Header handleSearch={this.handleSearchSubmit} />
-        <Body />
+        <Body results={this.state.results} />
       </Layout>
     );
   }

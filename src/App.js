@@ -8,11 +8,16 @@ import axios from "axios";
 class App extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       currentSearch: "",
       loading: false,
       results: []
     };
+
+    if ("previousSearch" in window.localStorage) {
+      this.state.results = JSON.parse(window.localStorage.getItem("pizza"));
+    }
   }
 
   handleSearchSubmit = value => {
@@ -23,21 +28,23 @@ class App extends Component {
 
     axios
       .get(
-        `https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q${
-        value
-        }`
+        `https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q=${value}`
       )
       .then(response => {
         console.log("this is the response");
         console.log(response.data);
         this.setState({
-          results: response.data.recipes
-        })
+          results: [...response.data.recipes]
+        });
+
+        window.localStorage.setItem(
+          "previousSearch",
+          JSON.stringify(response.data.recipes)
+        );
       })
       .catch(err => {
         console.log("There was an error", err);
       });
-
   };
 
   /*

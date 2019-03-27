@@ -10,11 +10,15 @@ class Results extends Component {
     };
   }
 
+  ResultClickHandler = () => {
+    
+  }
+
   render() {
 
     const Results = this.props.results.length === 0 ? <p> Please search for an item</p> : this.props.results.map((result) => {
       return <Result
-        id={result.recipe_id}
+        key={result.recipe_id}
         image={result.image_url}
         title={result.title}
         author={result.publisher}

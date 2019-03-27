@@ -1,12 +1,13 @@
+@import "../../../../sass/variables.scss";
+@import "../../../../sass/mixins.scss";
+
 .Container {
   height: 100%;
 
-  flex: 0 0 150px;
-
+  flex: 0 0 15rem;
 
   display: flex;
   flex-direction: column;
-  border: 3px solid brown;
 
   &__ImageContainer {
     width: 100%;
@@ -28,11 +29,22 @@
     width: 100%;
     height: 35%;
 
-    border: 3px solid blue;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-  }
+    justify-content: space-around;
+    border-right: 3px solid $color-grey-light-1;
 
+    &__Title {
+      font-size: 1.3rem;
+      color: $color-bg-2;
+      text-align: center;
+    }
+
+    &__Author {
+      font-size: 1.2rem;
+      color: $color-grey-dark;
+      font-weight: 500;
+    }
+  }
 }

@@ -2,12 +2,8 @@ import React from "react";
 import classes from "./Result.module.scss";
 
 const result = props => {
-  function ResultClickHandler(e) {
-    console.log(e);
-  }
-
   return (
-    <div className={classes.Container} onClick={ResultClickHandler}>
+    <div className={classes.Container} onClick={props.handleRecipeSelect}>
       <div className={classes.Container__ImageContainer}>
         <img
           className={classes.Container__ImageContainer__Image}

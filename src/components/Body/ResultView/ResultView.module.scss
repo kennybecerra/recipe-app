@@ -1,7 +1,44 @@
 .Container {
   width: 100%;
-
   flex: 1 0 30rem;
 
-  border: 3px dotted green;
+  border: 3px solid green;
+
+  display: flex;
+  flex-direction: column;
+
+  &__ImageContainer {
+    width: 100%;
+
+    flex: 0 1 40%;
+    overflow: hidden;
+    position: relative;
+
+    border: 3px solid blue;
+
+    &__Image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &__Caption {
+      position: absolute;
+      bottom: 10%;
+      left: 25%;
+      z-index: 100;
+      text-align: center;
+      width: 50%;
+      line-height: 2.5rem;
+      padding: 0.7rem 1.2rem;
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      transform: skewY(-6deg);
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      background-image: linear-gradient(to right bottom, #fbdb89, #f48982);
+    }
+  }
 }

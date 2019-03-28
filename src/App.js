@@ -11,19 +11,31 @@ class App extends Component {
 
     this.state = {
       currentSearch: "",
-      loading: false,
-      results: []
+      loadingResults: false,
+      loadingRecipe: false,
+      results: [],
+      recipe: null
     };
 
     if ("previousSearch" in window.localStorage) {
-      this.state.results = JSON.parse(window.localStorage.getItem("previousSearch"));
+      this.state.results = JSON.parse(
+        window.localStorage.getItem("previousSearch")
+      );
+    }
+
+    if ("previousRecipe" in window.localStorage) {
+      this.state.recipe = JSON.parse(
+        window.localStorage.getItem("previousRecipe")
+      );
+
+      console.log(this.state.recipe);
     }
   }
 
   handleSearchSubmit = value => {
     this.setState({
       currentSearch: value,
-      loading: true
+      loadingResults: true
     });
 
     axios
@@ -31,10 +43,9 @@ class App extends Component {
         `https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q=${value}`
       )
       .then(response => {
-        console.log("this is the response");
-        console.log(response.data);
         this.setState({
-          results: [...response.data.recipes]
+          results: [...response.data.recipes],
+          loadingResults: false
         });
 
         window.localStorage.setItem(
@@ -47,29 +58,43 @@ class App extends Component {
       });
   };
 
-  /*
-  componentDidUpdate() {
+  handleRecipeSelect = id => {
+    this.setState({
+      loadingRecipe: true
+    });
+
     axios
       .get(
-        `https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q${
-        this.state.searchVal
-        }`
+        `https://www.food2fork.com/api/get?key=97ace3f52f4192cd1500766f6c13eece&rId=${id}`
       )
       .then(response => {
         console.log("this is the response");
-        console.log(response);
+        console.log(response.data.recipe);
+        this.setState({
+          recipe: { ...response.data.recipe },
+          loadingRecipe: false
+        });
+
+        window.localStorage.setItem(
+          "previousRecipe",
+          JSON.stringify(response.data.recipe)
+        );
       })
       .catch(err => {
         console.log("There was an error", err);
       });
-  }
-  */
+  };
 
   render() {
     return (
       <Layout>
         <Header handleSearch={this.handleSearchSubmit} />
-        <Body results={this.state.results} />
+        <Body
+          results={this.state.results}
+          loadingResults={this.state.loadingResults}
+          handleRecipeSelect={this.handleRecipeSelect}
+          recipe={this.state.recipe}
+        />
       </Layout>
     );
   }

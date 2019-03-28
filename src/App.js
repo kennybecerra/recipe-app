@@ -16,7 +16,7 @@ class App extends Component {
     };
 
     if ("previousSearch" in window.localStorage) {
-      this.state.results = JSON.parse(window.localStorage.getItem("pizza"));
+      this.state.results = JSON.parse(window.localStorage.getItem("previousSearch"));
     }
   }
 

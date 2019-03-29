@@ -14,64 +14,145 @@
 .ImageContainer {
   width: 100%;
 
-  flex: 0 1 40%;
+  flex: 0 0 0;
   overflow: hidden;
-  position: relative;
 
-  border: 3px solid blue;
+  //border: 3px solid blue;
 
   &__Image {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-
-  &__Caption {
-    position: absolute;
-    bottom: 10%;
-    left: 25%;
-    z-index: 100;
-    text-align: center;
-    width: 50%;
-    line-height: 2.5rem;
-    padding: 0.7rem 1.2rem;
-    font-size: 2rem;
-    font-weight: 700;
-    color: white;
-    text-transform: uppercase;
-    transform: skewY(-6deg);
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-    background-image: linear-gradient(to right bottom, #fbdb89, #f48982);
-  }
 }
 
 .InfoContainer {
-
   width: 100%;
   flex: 0 1 20%;
+  background-color: $color-bg-3;
 
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: center;
+  align-items: center;
+
+  &__Caption {
+    flex: 0 0 100%;
+    text-align: center;
+    line-height: 2rem;
+    margin: 1.2rem 0;
+    padding: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    transform: skewY(-3deg);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    background-image: linear-gradient(
+      to right bottom,
+      $color-bg-1,
+      $color-bg-2
+    );
+
+    @include ResponsiveMobileFirst(phone) {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      z-index: 100;
+      text-align: center;
+      line-height: 2.5rem;
+      padding: 0.4rem 0.2rem;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      transform: translate(-50%, -50%) skewY(-6deg);
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      background-image: linear-gradient(
+        to right bottom,
+        $color-bg-1,
+        $color-bg-2
+      );
+    }
+  }
 
   &__Time {
+    border: 3px solid blue;
 
-    &__SVG {
-      width: 50px;
-      height: 50px;
-      fill: green;
- 
+    flex: 0 0 30%;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    &__Icon {
+      width: 2rem;
+      height: 2rem;
+      fill: $color-bg-2;
+      margin: 0 0.5rem;
     }
 
     &__Text {
-
+      font-size: 1.2rem;
+      font-weight: 700;
     }
-
   }
 
   &__Servings {
+    border: 3px solid green;
+    flex: 0 0 50%;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__Icon {
+      width: 2rem;
+      height: 2rem;
+      fill: $color-bg-2;
+      margin: 0 0.7rem;
+    }
+
+    &__Text {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
   }
 
   &__Like {
+    border: 3px solid brown;
 
+    flex: 0 0 20%;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    &__Button {
+      //padding: 0.8rem;
+      margin: 0;
+      border-radius: 50%;
+      border: none;
+      outline: none;
+      box-sizing: border-box;
+
+      background-image: linear-gradient(
+        to right bottom,
+        $color-bg-1,
+        $color-bg-2
+      );
+
+      &__Icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        fill: white;
+        padding: 0;
+        margin: 0.2rem;
+      }
+    }
   }
 }

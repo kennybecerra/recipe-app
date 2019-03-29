@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Layout from "./components/Layout/Layout";
-import Header from "./components/Header/Header";
+import Search from "./components/Search/Search";
 import "./App.css";
 import Body from "./components/Body/Body";
 import axios from "axios";
@@ -28,6 +28,7 @@ class App extends Component {
         window.localStorage.getItem("previousRecipe")
       );
 
+      //console.log(this.state.results);
       console.log(this.state.recipe);
     }
   }
@@ -88,13 +89,13 @@ class App extends Component {
   render() {
     return (
       <Layout>
-        <Header handleSearch={this.handleSearchSubmit} />
         <Body
           results={this.state.results}
           loadingResults={this.state.loadingResults}
           handleRecipeSelect={this.handleRecipeSelect}
           recipe={this.state.recipe}
         />
+        <Search handleSearch={this.handleSearchSubmit} />
       </Layout>
     );
   }

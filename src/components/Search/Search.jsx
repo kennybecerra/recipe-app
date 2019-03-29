@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import searchLogo from "../../assets/svg/search.svg";
 import recipeLogo from "../../assets/svg/recipe.svg";
-import classes from "./Header.module.scss";
+import classes from "./Search.module.scss";
 
-class Header extends Component {
+class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,7 +22,7 @@ class Header extends Component {
 
   render() {
     return (
-      <div className={classes.HeaderContainer}>
+      <div className={classes.Container}>
         <img
           className={classes.RecipeLogo}
           src={recipeLogo}
@@ -59,4 +59,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default Search;

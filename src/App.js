@@ -14,7 +14,8 @@ class App extends Component {
       loadingResults: false,
       loadingRecipe: false,
       results: [],
-      recipe: null
+      recipe: null,
+      transformedIngredients: null
     };
 
     if ("previousSearch" in window.localStorage) {
@@ -30,7 +31,56 @@ class App extends Component {
 
       //console.log(this.state.results);
       console.log(this.state.recipe);
+      console.log(this.state.recipe.ingredients)
+      console.log(this.transformIngredients(this.state.recipe.ingredients));
     }
+  }
+
+  transformIngredients = (ingredients) => {
+    const findNumbers = /^(\d*(\s?\d+\/\d | \s?))/;
+    const findFraction = /\//;
+    const findMetric = /(cup|ounce|pound|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick)/i;
+    const findParenthesis = /\(([^)]+)\)/g;
+    let transformedIngredients = ingredients.map((val) => {
+      const transform = {
+        amount: 1,
+        metric: "item",
+        description: ""
+      }
+
+      // Fingure out Amounts
+      let result = val.match(findNumbers);
+      if (result === null) {
+        transform.amount = 1
+      }
+      else {
+        transform.amount = result[0].trim().split(" ").map((val) => {
+
+          if (findFraction.test(val)) {
+            let numbers = val.split("/");
+            return parseFloat((parseInt(numbers[0], 10) / parseInt(numbers[1], 10)).toFixed(2));
+          }
+          else {
+            return parseInt(val)
+          }
+        }).reduce((accu, cur) => { return accu + cur });
+      }
+
+      //Figure Out metric
+
+      if (findMetric.test(val)) {
+        transform.metric = val.match(findMetric)[0];
+      }
+
+      // Figure out description
+      transform.description = val.replace(findParenthesis, "");
+      if (transform.description.length > 20) {
+        transform.description = transform.description.split(".")[0];
+      }
+      return transform
+    })
+
+    return transformedIngredients;
   }
 
   handleSearchSubmit = value => {
@@ -71,6 +121,7 @@ class App extends Component {
       .then(response => {
         console.log("this is the response");
         console.log(response.data.recipe);
+
         this.setState({
           recipe: { ...response.data.recipe },
           loadingRecipe: false

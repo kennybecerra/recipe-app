@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Result from "./Result/Result";
 import classes from "./Results.module.scss";
-import Spinner from "../../UI/Spinner";
+import Spinner from "../../UI/Spinner/Spinner";
 
 class Results extends Component {
   constructor(props) {

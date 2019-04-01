@@ -7,7 +7,12 @@ import ShoppingList from "./ShoppingList/ShoppingList";
 const body = props => {
   return (
     <div className={classes.BodyContainer}>
-      <ResultView recipe={props.recipe} />
+      <ResultView
+        recipe={props.recipe}
+        servings={props.servings}
+        loading={props.loadingRecipe}
+        handleServingChange={props.handleServingChange}
+      />
       <Results
         results={props.results}
         loading={props.loadingResults}

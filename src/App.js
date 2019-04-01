@@ -15,7 +15,7 @@ class App extends Component {
       loadingRecipe: false,
       results: [],
       recipe: null,
-      transformedIngredients: null
+      servings: 4
     };
 
     if ("previousSearch" in window.localStorage) {
@@ -30,58 +30,91 @@ class App extends Component {
       );
 
       //console.log(this.state.results);
+      console.log("Recipe in history");
       console.log(this.state.recipe);
-      console.log(this.state.recipe.ingredients)
-      console.log(this.transformIngredients(this.state.recipe.ingredients));
+      //console.log(this.state.recipe.ingredients);
+      //console.log(this.transformIngredients(this.state.recipe.ingredients));
     }
   }
 
-  transformIngredients = (ingredients) => {
+  transformIngredients = ingredients => {
     const findNumbers = /^(\d*(\s?\d+\/\d | \s?))/;
     const findFraction = /\//;
-    const findMetric = /(cup|ounce|pound|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick)/i;
-    const findParenthesis = /\(([^)]+)\)/g;
-    let transformedIngredients = ingredients.map((val) => {
+    const findMetric = /(cup|ounce|pound|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick|slice|loaf)/i;
+    const findParenthesis = /\(([^)]+)\) ?/g;
+    const cleanBegining = /^.*(cup|ounce|pound|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick|slice|loaf)(s|es)? (of)?/;
+    let transformedIngredients = ingredients.map(val => {
       const transform = {
         amount: 1,
         metric: "item",
-        description: ""
-      }
+        description: "",
+        fullText: ""
+      };
 
       // Fingure out Amounts
-      let result = val.match(findNumbers);
+      let result = val.trim().match(findNumbers);
       if (result === null) {
-        transform.amount = 1
+        transform.amount = 1;
+        console.log("Happened for : ", val);
+      } else {
+        transform.amount = result[0]
+          .trim()
+          .split(" ")
+          .map(val => {
+            if (findFraction.test(val)) {
+              let numbers = val.split("/");
+              return parseFloat(
+                (parseInt(numbers[0], 10) / parseInt(numbers[1], 10)).toFixed(2)
+              );
+            } else {
+              return parseInt(val);
+            }
+          })
+          .reduce((accu, cur) => {
+            return accu + cur;
+          });
       }
-      else {
-        transform.amount = result[0].trim().split(" ").map((val) => {
 
-          if (findFraction.test(val)) {
-            let numbers = val.split("/");
-            return parseFloat((parseInt(numbers[0], 10) / parseInt(numbers[1], 10)).toFixed(2));
-          }
-          else {
-            return parseInt(val)
-          }
-        }).reduce((accu, cur) => { return accu + cur });
-      }
+      // normalizing the servings amounts
+      transform.amount = transform.amount / 4;
 
       //Figure Out metric
 
       if (findMetric.test(val)) {
-        transform.metric = val.match(findMetric)[0];
+        transform.metric = val.match(findMetric)[0].toLowerCase();
       }
 
       // Figure out description
       transform.description = val.replace(findParenthesis, "");
+      transform.description = transform.description.replace(findNumbers, "");
+      transform.description = transform.description.replace(cleanBegining, "");
+
       if (transform.description.length > 20) {
         transform.description = transform.description.split(".")[0];
       }
-      return transform
-    })
+
+      // Full text
+      transform.fullText = val;
+
+      return transform;
+    });
 
     return transformedIngredients;
-  }
+  };
+
+  handleServingChange = value => {
+    console.log("Handleservingchnage was run");
+    let newServings = this.state.servings;
+    if (value === "increment") {
+      newServings++;
+    } else if (value === "decrement") {
+      newServings--;
+    }
+
+    this.setState({
+      servings: newServings
+    });
+  };
 
   handleSearchSubmit = value => {
     this.setState({
@@ -120,8 +153,12 @@ class App extends Component {
       )
       .then(response => {
         console.log("this is the response");
-        console.log(response.data.recipe);
+        //console.log(response.data.recipe);
 
+        response.data.recipe.transformedIngredients = this.transformIngredients(
+          response.data.recipe.ingredients
+        );
+        console.log(response.data.recipe);
         this.setState({
           recipe: { ...response.data.recipe },
           loadingRecipe: false
@@ -143,8 +180,11 @@ class App extends Component {
         <Body
           results={this.state.results}
           loadingResults={this.state.loadingResults}
+          loadingRecipe={this.state.loadingRecipe}
           handleRecipeSelect={this.handleRecipeSelect}
           recipe={this.state.recipe}
+          servings={this.state.servings}
+          handleServingChange={this.state.handleServingChange}
         />
         <Search handleSearch={this.handleSearchSubmit} />
       </Layout>

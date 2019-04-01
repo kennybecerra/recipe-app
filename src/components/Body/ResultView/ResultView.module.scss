@@ -35,22 +35,18 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-content: center;
-  align-items: center;
+  align-content: space-around;
 
   &__Caption {
     flex: 0 0 100%;
     text-align: center;
     line-height: 2rem;
-    margin: 1.2rem 0;
+    margin: 0.5rem 0;
     padding: 0.5rem;
-    font-size: 1.3rem;
+    font-size: 2rem;
     font-weight: 700;
     color: white;
     text-transform: uppercase;
-    transform: skewY(-3deg);
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
     background-image: linear-gradient(
       to right bottom,
       $color-bg-1,
@@ -83,7 +79,7 @@
   &__Time {
     border: 3px solid blue;
 
-    flex: 0 0 30%;
+    flex: 1 1 30%;
 
     display: flex;
     justify-content: space-around;
@@ -99,12 +95,13 @@
     &__Text {
       font-size: 1.2rem;
       font-weight: 700;
+      text-align: center;
     }
   }
 
   &__Servings {
     border: 3px solid green;
-    flex: 0 0 50%;
+    flex: 1 1 50%;
 
     display: flex;
     justify-content: center;
@@ -114,19 +111,21 @@
       width: 2rem;
       height: 2rem;
       fill: $color-bg-2;
-      margin: 0 0.7rem;
+      margin: 0 0.5rem;
+      cursor: pointer;
     }
 
     &__Text {
       font-size: 1.2rem;
       font-weight: 700;
+      text-align: center;
     }
   }
 
   &__Like {
     border: 3px solid brown;
 
-    flex: 0 0 20%;
+    flex: 0 1 20%;
 
     display: flex;
     justify-content: space-around;
@@ -166,6 +165,48 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
+}
 
+.ButtonContainer {
+  width: 100%;
+  flex: 0 0 10%;
+  background-color: $color-bg-3;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__Button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 17rem;
+
+    cursor: pointer;
+    border: none;
+    border-radius: 10rem;
+    padding: 0.5rem;
+    background-image: linear-gradient(
+      to right bottom,
+      $color-bg-1,
+      $color-bg-2
+    );
+
+    &__Icon {
+      flex: 0 1 20%;
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: white;
+      //margin: 0 0.4rem;
+    }
+
+    &__Text {
+      flex: 1 0 80%;
+      color: white;
+      text-transform: uppercase;
+      font-size: 1rem;
+      //white-space: nowrap;
+    }
+  }
 }

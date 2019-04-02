@@ -15,7 +15,8 @@ class App extends Component {
       loadingRecipe: false,
       results: [],
       recipe: null,
-      servings: 4
+      servings: 4,
+      favorites: {}
     };
 
     if ("previousSearch" in window.localStorage) {
@@ -34,6 +35,12 @@ class App extends Component {
       console.log(this.state.recipe);
       //console.log(this.state.recipe.ingredients);
       //console.log(this.transformIngredients(this.state.recipe.ingredients));
+    }
+
+    if ("favorites" in window.localStorage) {
+      this.state.favorites = JSON.parse(
+        window.localStorage.getItem("favorites")
+      );
     }
   }
 
@@ -55,7 +62,7 @@ class App extends Component {
       let result = val.trim().match(findNumbers);
       if (result === null) {
         transform.amount = 1;
-        console.log("Happened for : ", val);
+        //console.log("Happened for : ", val);
       } else {
         transform.amount = result[0]
           .trim()
@@ -102,12 +109,21 @@ class App extends Component {
     return transformedIngredients;
   };
 
+  handleAddToFavorites = () => {
+    let clone = { ...this.state.liked };
+    clone[this.state.recipe.recipe_id] = { ...this.state.recipe };
+    this.setState({
+      favorites: clone
+    });
+
+    window.localStorage.setItem("favorites", JSON.stringify(clone));
+  };
+
   handleServingChange = value => {
-    console.log("Handleservingchnage was run");
     let newServings = this.state.servings;
-    if (value === "increment") {
+    if (value === "increment" && newServings < 20) {
       newServings++;
-    } else if (value === "decrement") {
+    } else if (value === "decrement" && newServings > 1) {
       newServings--;
     }
 
@@ -184,7 +200,9 @@ class App extends Component {
           handleRecipeSelect={this.handleRecipeSelect}
           recipe={this.state.recipe}
           servings={this.state.servings}
-          handleServingChange={this.state.handleServingChange}
+          handleServingChange={this.handleServingChange}
+          handleAddToFavorites={this.handleAddToFavorites}
+          favorites={this.state.favorites}
         />
         <Search handleSearch={this.handleSearchSubmit} />
       </Layout>

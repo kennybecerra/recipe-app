@@ -12,6 +12,8 @@ const body = props => {
         servings={props.servings}
         loading={props.loadingRecipe}
         handleServingChange={props.handleServingChange}
+        handleAddToFavorites={props.handleAddToFavorites}
+        favorites={props.favorites}
       />
       <Results
         results={props.results}

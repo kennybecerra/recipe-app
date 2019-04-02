@@ -35,7 +35,9 @@ class ResultView extends Component {
                 name="stopwatch"
                 className={classes.InfoContainer__Time__Icon}
               />
-              <p className={classes.InfoContainer__Time__Text}> 30 minutes</p>
+              <p className={classes.InfoContainer__Time__Text}>
+                {Math.floor(this.props.servings / 2) * 15} minutes
+              </p>
             </div>
             <div className={classes.InfoContainer__Servings}>
               <Icon
@@ -43,28 +45,33 @@ class ResultView extends Component {
                 className={classes.InfoContainer__Servings__Icon}
               />
               <p className={classes.InfoContainer__Servings__Text}>
-                4 servings
+                {this.props.servings} servings
               </p>
               <Icon
                 name="minus-solid"
                 className={classes.InfoContainer__Servings__Icon}
                 onClick={() => {
-                  //this.props.handleServingChange("decrement");
+                  this.props.handleServingChange("decrement");
                 }}
               />
               <Icon
                 name="add-solid"
                 className={classes.InfoContainer__Servings__Icon}
                 onClick={() => {
-                  //this.props.handleServingChange("increment");
+                  this.props.handleServingChange("increment");
                 }}
               />
             </div>
             <div className={classes.InfoContainer__Like}>
               <button className={classes.InfoContainer__Like__Button}>
                 <Icon
-                  name="heart-solid"
+                  name={
+                    this.props.favorites[this.props.recipe.recipe_id]
+                      ? "heart-solid"
+                      : "heart-outline"
+                  }
                   className={classes.InfoContainer__Like__Button__Icon}
+                  onClick={this.props.handleAddToFavorites}
                 />
               </button>
             </div>

@@ -45,11 +45,12 @@ class App extends Component {
   }
 
   transformIngredients = ingredients => {
+    const findInfo = /(\d+\s)?(\d+\/\d+)?\s(cup|ounce|oz|pound|lb|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick|slice|loaf)/i
     const findNumbers = /^(\d*(\s?\d+\/\d | \s?))/;
     const findFraction = /\//;
-    const findMetric = /(cup|ounce|pound|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick|slice|loaf)/i;
+    const findMetric = /(cup|ounce|oz|pound|lb|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick|slice|loaf)/i;
     const findParenthesis = /\(([^)]+)\) ?/g;
-    const cleanBegining = /^.*(cup|ounce|pound|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick|slice|loaf)(s|es)? (of)?/;
+    const cleanBegining = /^.*(cup|ounce|oz|pound|lb|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick|slice|loaf)(s|es)? (of)?/;
     let transformedIngredients = ingredients.map(val => {
       const transform = {
         amount: 1,
@@ -59,6 +60,8 @@ class App extends Component {
       };
 
       // Fingure out Amounts
+      let newVal = val.match(findInfo);
+      //console.log("this is my new Search : ", newVal[0])
       let result = val.trim().match(findNumbers);
       if (result === null) {
         transform.amount = 1;
@@ -67,14 +70,14 @@ class App extends Component {
         transform.amount = result[0]
           .trim()
           .split(" ")
-          .map(val => {
-            if (findFraction.test(val)) {
-              let numbers = val.split("/");
+          .map(value => {
+            if (findFraction.test(value)) {
+              let numbers = value.split("/");
               return parseFloat(
-                (parseInt(numbers[0], 10) / parseInt(numbers[1], 10)).toFixed(2)
+                (parseInt(numbers[0], 10) / parseInt(numbers[1], 10)).toFixed(4)
               );
             } else {
-              return parseInt(val);
+              return parseInt(value);
             }
           })
           .reduce((accu, cur) => {
@@ -177,7 +180,8 @@ class App extends Component {
         console.log(response.data.recipe);
         this.setState({
           recipe: { ...response.data.recipe },
-          loadingRecipe: false
+          loadingRecipe: false,
+          servings: 4
         });
 
         window.localStorage.setItem(

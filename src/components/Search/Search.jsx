@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import searchLogo from "../../assets/svg/search.svg";
 import recipeLogo from "../../assets/svg/recipe.svg";
 import classes from "./Search.module.scss";
+import Favorites from "./favorites/favorites";
 
 class Search extends Component {
   constructor(props) {
@@ -48,12 +49,10 @@ class Search extends Component {
           </button>
         </form>
 
-        {/* <div className={classes.LikesContainer}></div> */}
-        <img
-          className={classes.RecipeLogo}
-          src={recipeLogo}
-          alt="knife and fork"
-        />
+        <div className={classes.LikesContainer}>
+          <Favorites />
+        </div>
+
       </div>
     );
   }

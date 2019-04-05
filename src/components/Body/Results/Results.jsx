@@ -30,6 +30,7 @@ class Results extends Component {
             handleRecipeSelect={() =>
               this.props.handleRecipeSelect(result.recipe_id)
             }
+            highlight={this.props.recipe.recipe_id === result.recipe_id}
           />
         );
       });

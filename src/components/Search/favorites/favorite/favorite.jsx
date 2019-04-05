@@ -1,7 +1,7 @@
 import React from "react";
-import classes from "./Result.module.scss";
+import classes from "./favorite.module.scss";
 
-const result = props => {
+const favorite = props => {
   return (
     <div
       className={classes.Container}
@@ -27,4 +27,4 @@ const result = props => {
   );
 };
 
-export default result;
+export default favorite;

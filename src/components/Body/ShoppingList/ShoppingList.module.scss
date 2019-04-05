@@ -1,7 +1,17 @@
+@import "../../../sass/variables.scss";
+@import "../../../sass/mixins.scss";
+
 .Container {
   width: 100%;
   flex: 0 0 5rem;
 
   display: none;
   border: 3px dotted green;
+
+  @include ResponsiveMobileFirst(tab-port) {
+    display: flex;
+
+    order: 3;
+    flex: 1 1 30%;
+  }
 }

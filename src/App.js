@@ -33,7 +33,7 @@ class App extends Component {
       //console.log(this.state.results);
       console.log("Recipe in history");
       console.log(this.state.recipe);
-      //console.log(this.state.recipe.ingredients);
+      //console.log(this.state);
       //console.log(this.transformIngredients(this.state.recipe.ingredients));
     }
 
@@ -42,10 +42,11 @@ class App extends Component {
         window.localStorage.getItem("favorites")
       );
     }
+    console.log(this.state);
   }
 
   transformIngredients = ingredients => {
-    const findInfo = /(\d+\s)?(\d+\/\d+)?\s(cup|ounce|oz|pound|lb|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick|slice|loaf)/i
+    //const findInfo = /(\d+\s)?(\d+\/\d+)?\s(cup|ounce|oz|pound|lb|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick|slice|loaf)/i;
     const findNumbers = /^(\d*(\s?\d+\/\d | \s?))/;
     const findFraction = /\//;
     const findMetric = /(cup|ounce|oz|pound|lb|gram|teaspoon|tsp|tablespoon|tbsp|pint|quart|gallon|pinch|dash|smidgen|drop|egg|stick|slice|loaf)/i;
@@ -60,7 +61,7 @@ class App extends Component {
       };
 
       // Fingure out Amounts
-      let newVal = val.match(findInfo);
+      //let newVal = val.match(findInfo);
       //console.log("this is my new Search : ", newVal[0])
       let result = val.trim().match(findNumbers);
       if (result === null) {
@@ -113,11 +114,21 @@ class App extends Component {
   };
 
   handleAddToFavorites = () => {
-    let clone = { ...this.state.liked };
-    clone[this.state.recipe.recipe_id] = { ...this.state.recipe };
-    this.setState({
-      favorites: clone
-    });
+    let clone = null;
+    if (this.state.favorites[this.state.recipe.recipe_id]) {
+      clone = { ...this.state.favorites };
+      delete clone[this.state.recipe.recipe_id];
+
+      this.setState({
+        favorites: clone
+      });
+    } else {
+      clone = { ...this.state.favorites };
+      clone[this.state.recipe.recipe_id] = { ...this.state.recipe };
+      this.setState({
+        favorites: clone
+      });
+    }
 
     window.localStorage.setItem("favorites", JSON.stringify(clone));
   };
@@ -208,7 +219,12 @@ class App extends Component {
           handleAddToFavorites={this.handleAddToFavorites}
           favorites={this.state.favorites}
         />
-        <Search handleSearch={this.handleSearchSubmit} />
+        <Search
+          handleSearch={this.handleSearchSubmit}
+          favorites={this.state.favorites}
+          handleRecipeSelect={this.handleRecipeSelect}
+          recipe={this.state.recipe}
+        />
       </Layout>
     );
   }

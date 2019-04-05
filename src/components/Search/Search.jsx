@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import searchLogo from "../../assets/svg/search.svg";
 import recipeLogo from "../../assets/svg/recipe.svg";
+import Icon from "../UI/Icon/Icon";
 import classes from "./Search.module.scss";
 import Favorites from "./favorites/favorites";
+import Modal from "./../UI/Modal/Modal";
 
 class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: ""
+      show: false
     };
   }
 
@@ -21,14 +23,27 @@ class Search extends Component {
     this.props.handleSearch(this.state.value);
   };
 
+  handleModalToggle = () => {
+    let newShow = !this.state.show;
+    this.setState({
+      show: newShow
+    });
+  };
+
   render() {
     return (
       <div className={classes.Container}>
-        <img
-          className={classes.RecipeLogo}
-          src={recipeLogo}
-          alt="knife and fork"
-        />
+        <div className={classes.CartContainer}>
+          <Icon
+            name="cart"
+            className={classes.CartContainer__Icon}
+            onClick={this.handleModalToggle}
+          />
+          <Modal show={this.state.show} toggleModal={this.handleModalToggle}>
+            <h2>This is the shopiing List</h2>
+            <p>First Item</p>
+          </Modal>
+        </div>
 
         <form onSubmit={this.handleSubmit} className={classes.FormContainer}>
           <input
@@ -49,10 +64,13 @@ class Search extends Component {
           </button>
         </form>
 
-        <div className={classes.LikesContainer}>
-          <Favorites />
+        <div className={classes.FavoritesContainer}>
+          <Favorites
+            favorites={this.props.favorites}
+            handleRecipeSelect={this.props.handleRecipeSelect}
+            recipe={this.props.recipe}
+          />
         </div>
-
       </div>
     );
   }

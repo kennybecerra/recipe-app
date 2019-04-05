@@ -6,7 +6,7 @@ import ShoppingList from "./ShoppingList/ShoppingList";
 
 const body = props => {
   return (
-    <div className={classes.BodyContainer}>
+    <div className={classes.Container}>
       <ResultView
         recipe={props.recipe}
         servings={props.servings}
@@ -19,6 +19,7 @@ const body = props => {
         results={props.results}
         loading={props.loadingResults}
         handleRecipeSelect={props.handleRecipeSelect}
+        recipe={props.recipe}
       />
       <ShoppingList />
     </div>

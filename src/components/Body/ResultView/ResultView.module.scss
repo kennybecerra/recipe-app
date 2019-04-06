@@ -45,6 +45,7 @@
   flex: 0 0 30%;
   background-color: $color-bg-3;
 
+  //border: 3px solid brown;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -53,6 +54,8 @@
 
   @include ResponsiveMobileFirst(tab-port) {
     flex: 0 0 10%;
+    position: relative;
+    padding-top: 1rem;
   }
 
   &__Caption {
@@ -71,31 +74,19 @@
       $color-bg-2
     );
 
-    @include ResponsiveMobileFirst(phone) {
+    @include ResponsiveMobileFirst(tab-port) {
+      width: 75%;
       position: absolute;
       top: 0;
       left: 50%;
-      z-index: 100;
-      text-align: center;
-      line-height: 2.5rem;
-      padding: 0.4rem 0.2rem;
-      font-size: 1.7rem;
-      font-weight: 700;
-      color: white;
-      text-transform: uppercase;
-      transform: translate(-50%, -50%) skewY(-6deg);
+      transform: translate(-50%, -100%) skewY(-3deg);
       -webkit-box-decoration-break: clone;
       box-decoration-break: clone;
-      background-image: linear-gradient(
-        to right bottom,
-        $color-bg-1,
-        $color-bg-2
-      );
     }
   }
 
   &__Time {
-    border: 3px solid blue;
+    //border: 3px solid blue;
 
     flex: 1 1 30%;
 
@@ -108,17 +99,25 @@
       height: 2rem;
       fill: $color-bg-2;
       margin: 0 0.5rem;
+      @include ResponsiveMobileFirst(desktop) {
+        width: 2.6rem;
+        height: 2.6rem;
+      }
     }
 
     &__Text {
       font-size: 1.2rem;
       font-weight: 700;
       text-align: center;
+
+      @include ResponsiveMobileFirst(desktop) {
+        font-size: 1.5rem;
+      } 
     }
   }
 
   &__Servings {
-    border: 3px solid green;
+    //border: 3px solid green;
     flex: 1 1 50%;
 
     display: flex;
@@ -131,12 +130,21 @@
       fill: $color-bg-2;
       margin: 0 0.5rem;
       cursor: pointer;
+
+      @include ResponsiveMobileFirst(desktop) {
+        width: 2.6rem;
+        height: 2.6rem;
+        margin: 0 .8rem;
+      }
     }
 
     &__Text {
       font-size: 1.2rem;
       font-weight: 700;
       text-align: center;
+      @include ResponsiveMobileFirst(desktop) {
+        font-size: 1.5rem;
+      } 
     }
   }
 
@@ -169,6 +177,11 @@
         fill: white;
         padding: 0;
         margin: 0.2rem;
+
+        @include ResponsiveMobileFirst(desktop) {
+          width: 2.6rem;
+          height: 2.6rem;
+        }
       }
     }
   }
@@ -215,7 +228,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 3px solid blue;
 
   &__Button {
     display: flex;

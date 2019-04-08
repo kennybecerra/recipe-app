@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import searchLogo from "../../assets/svg/search.svg";
-import recipeLogo from "../../assets/svg/recipe.svg";
 import Icon from "../UI/Icon/Icon";
 import classes from "./Search.module.scss";
 import Favorites from "./favorites/favorites";
 import Modal from "./../UI/Modal/Modal";
+import ListItem from "./../Body/ShoppingList/ListItem/ListItem";
 
 class Search extends Component {
   constructor(props) {
@@ -40,8 +40,30 @@ class Search extends Component {
             onClick={this.handleModalToggle}
           />
           <Modal show={this.state.show} toggleModal={this.handleModalToggle}>
-            <h2>This is the shopiing List</h2>
-            <p>First Item</p>
+            <div className={classes.InnerContainer}>
+              <div className={classes.InnerContainer__TextContainer}>
+                <h2 className={classes.InnerContainer__TextContainer__Text}>
+                  Shopping List
+                </h2>
+              </div>
+              {this.props.ShoppingList.length === 0
+                ? null
+                : this.props.ShoppingList.map((item, index) => {
+                    return (
+                      <ListItem
+                        key={index}
+                        index={index}
+                        {...item}
+                        handleDeleteFromSchoppingList={
+                          this.props.handleDeleteFromSchoppingList
+                        }
+                        handleAmountChangeInShoppingList={
+                          this.props.handleAmountChangeInShoppingList
+                        }
+                      />
+                    );
+                  })}
+            </div>
           </Modal>
         </div>
 
@@ -53,10 +75,9 @@ class Search extends Component {
             placeholder="Search over 1,000,000 recipes and more ...."
           />
           <button className={classes.FormContainer__ButtonField}>
-            <img
-              className={classes.FormContainer__ButtonField__Image}
-              src={searchLogo}
-              alt=""
+            <Icon
+              name="search"
+              className={classes.FormContainer__ButtonField__Icon}
             />
             <span className={classes.FormContainer__ButtonField__Text}>
               SEARCH

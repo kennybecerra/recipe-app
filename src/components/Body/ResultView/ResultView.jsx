@@ -88,7 +88,10 @@ class ResultView extends Component {
             })}
           </div>
           <div className={classes.ButtonContainer}>
-            <button className={classes.ButtonContainer__Button}>
+            <button
+              className={classes.ButtonContainer__Button}
+              onClick={this.props.handleAddToShoppingList}
+            >
               <Icon
                 name="cart"
                 className={classes.ButtonContainer__Button__Icon}

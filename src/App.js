@@ -16,7 +16,8 @@ class App extends Component {
       results: [],
       recipe: null,
       servings: 4,
-      favorites: {}
+      favorites: {},
+      ShoppingList: []
     };
 
     if ("previousSearch" in window.localStorage) {
@@ -29,17 +30,17 @@ class App extends Component {
       this.state.recipe = JSON.parse(
         window.localStorage.getItem("previousRecipe")
       );
-
-      //console.log(this.state.results);
-      console.log("Recipe in history");
-      console.log(this.state.recipe);
-      //console.log(this.state);
-      //console.log(this.transformIngredients(this.state.recipe.ingredients));
     }
 
     if ("favorites" in window.localStorage) {
       this.state.favorites = JSON.parse(
         window.localStorage.getItem("favorites")
+      );
+    }
+
+    if ("ShoppingList" in window.localStorage) {
+      this.state.ShoppingList = JSON.parse(
+        window.localStorage.getItem("ShoppingList")
       );
     }
     console.log(this.state);
@@ -183,7 +184,7 @@ class App extends Component {
       )
       .then(response => {
         console.log("this is the response");
-        //console.log(response.data.recipe);
+        console.log(response.data.recipe);
 
         response.data.recipe.transformedIngredients = this.transformIngredients(
           response.data.recipe.ingredients
@@ -205,6 +206,49 @@ class App extends Component {
       });
   };
 
+  handleAddToShoppingList = () => {
+    //let list = [...this.state.recipe.transformedIngredients];
+    let list = this.state.recipe.transformedIngredients.map(item => {
+      let newItem = { ...item };
+      newItem.servings = this.state.servings;
+      return newItem;
+    });
+    list = this.state.ShoppingList.concat(list);
+    this.setState({ ShoppingList: list });
+
+    window.localStorage.setItem("ShoppingList", JSON.stringify(list));
+  };
+
+  handleDeleteFromSchoppingList = index => {
+    let newList = [...this.state.ShoppingList];
+    newList.splice(index, 1);
+    this.setState({
+      ShoppingList: newList
+    });
+
+    //Sync with local Storage for access to current shoppinglist if page reloaded
+    window.localStorage.setItem("ShoppingList", JSON.stringify(newList));
+  };
+
+  handleAmountChangeInShoppingList = (value, index) => {
+    let newList = [...this.state.ShoppingList];
+    if (value === "increase" && newList[index].servings < 20) {
+      newList[index].servings++;
+      this.setState({
+        ShoppingList: newList
+      });
+      window.localStorage.setItem("ShoppingList", JSON.stringify(newList));
+    } else if (value === "decrease" && newList[index].servings > 0) {
+      newList[index].servings--;
+      this.setState({
+        ShoppingList: newList
+      });
+      window.localStorage.setItem("ShoppingList", JSON.stringify(newList));
+    } else {
+      console.log("an Issue happened in the amount change selection : ", value);
+    }
+  };
+
   render() {
     return (
       <Layout>
@@ -217,6 +261,12 @@ class App extends Component {
           servings={this.state.servings}
           handleServingChange={this.handleServingChange}
           handleAddToFavorites={this.handleAddToFavorites}
+          handleAddToShoppingList={this.handleAddToShoppingList}
+          handleDeleteFromSchoppingList={this.handleDeleteFromSchoppingList}
+          handleAmountChangeInShoppingList={
+            this.handleAmountChangeInShoppingList
+          }
+          ShoppingList={this.state.ShoppingList}
           favorites={this.state.favorites}
         />
         <Search
@@ -224,6 +274,11 @@ class App extends Component {
           favorites={this.state.favorites}
           handleRecipeSelect={this.handleRecipeSelect}
           recipe={this.state.recipe}
+          handleDeleteFromSchoppingList={this.handleDeleteFromSchoppingList}
+          handleAmountChangeInShoppingList={
+            this.handleAmountChangeInShoppingList
+          }
+          ShoppingList={this.state.ShoppingList}
         />
       </Layout>
     );

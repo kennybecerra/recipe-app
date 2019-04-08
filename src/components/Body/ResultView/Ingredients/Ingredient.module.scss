@@ -10,13 +10,23 @@
   //border: 3px solid red;
   padding: 0.2rem 0;
 
+  @include ResponsiveMobileFirst(desktop) {
+    flex: 0 1 80%;
+  }
+
   &__Icon {
     flex: 1 1 15%;
     width: 1.5rem;
     height: 1.5rem;
-    fill: green;
+    fill: $color-bg-2;
     align-self: center;
 
+    //border: 2px solid orange;
+
+    @include ResponsiveMobileFirst(desktop) {
+      width: 1.8rem;
+      height: 1.8rem;
+    }
     //margin: 0 0.7rem;
   }
 
@@ -24,5 +34,10 @@
     flex: 1 1 85%;
     font-size: 1.3rem;
     font-weight: 700;
+    //border: 3px solid green;
+
+    @include ResponsiveMobileFirst(desktop) {
+      font-size: 1.4rem;
+    }
   }
 }

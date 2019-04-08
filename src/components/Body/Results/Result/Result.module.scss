@@ -22,6 +22,7 @@
   &__ImageContainer {
     width: 100%;
     flex: 0 0 65%;
+    max-height: 65%;
 
     display: flex;
     justify-content: center;
@@ -29,7 +30,9 @@
 
     @include ResponsiveMobileFirst(tab-port) {
       height: 100%;
+      max-height: 10rem;
       flex: 0 0 40%;
+      max-width: 40%;
     }
 
     &__Image {

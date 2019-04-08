@@ -8,6 +8,7 @@ class Modal extends Component {
       show: false
     };
   }
+
   render() {
     return (
       <div
@@ -16,6 +17,10 @@ class Modal extends Component {
         style={this.props.show ? { zIndex: "10", opacity: "1" } : {}}
       >
         <div
+          onClick={e => {
+            e.stopPropagation();
+            console.log("The modal was clicked");
+          }}
           className={classes.Modal}
           style={this.props.show ? { transform: "translateY(0)" } : {}}
         >

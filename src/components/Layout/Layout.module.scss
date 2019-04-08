@@ -23,7 +23,8 @@
   @include ResponsiveMobileFirst(tab-port) {
     height: 85vh;
     width: 85vw;
-    //min-height: 70rem;
+    min-height: 70rem;
     max-width: 120rem;
+    max-height: 85%;
   }
 }

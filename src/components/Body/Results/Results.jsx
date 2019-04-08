@@ -18,7 +18,7 @@ class Results extends Component {
 
     if (this.props.loading) {
       Results = <Spinner />;
-    } else if (this.props.length !== 0) {
+    } else if (this.props.results.length !== 0) {
       Results = this.props.results.map(result => {
         return (
           <Result
@@ -30,7 +30,11 @@ class Results extends Component {
             handleRecipeSelect={() =>
               this.props.handleRecipeSelect(result.recipe_id)
             }
-            highlight={this.props.recipe.recipe_id === result.recipe_id}
+            highlight={
+              this.props.recipe
+                ? this.props.recipe.recipe_id === result.recipe_id
+                : false
+            }
           />
         );
       });

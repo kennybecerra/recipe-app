@@ -13,6 +13,7 @@ const body = props => {
         loading={props.loadingRecipe}
         handleServingChange={props.handleServingChange}
         handleAddToFavorites={props.handleAddToFavorites}
+        handleAddToShoppingList={props.handleAddToShoppingList}
         favorites={props.favorites}
       />
       <Results
@@ -21,7 +22,13 @@ const body = props => {
         handleRecipeSelect={props.handleRecipeSelect}
         recipe={props.recipe}
       />
-      <ShoppingList />
+      <ShoppingList
+        ShoppingList={props.ShoppingList}
+        handleDeleteFromSchoppingList={props.handleDeleteFromSchoppingList}
+        handleAmountChangeInShoppingList={
+          props.handleAmountChangeInShoppingList
+        }
+      />
     </div>
   );
 };

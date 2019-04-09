@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import classes from "./ShoppingList.module.scss";
 import ListItem from "./ListItem/ListItem";
+import Message from "./../../UI/Message/Message";
+import Auxilary from "../../../hoc/Auxilary/Auxilary";
 
 class ShoppingList extends Component {
   constructor(props) {
@@ -10,9 +12,18 @@ class ShoppingList extends Component {
 
   render() {
     let output =
-      this.props.ShoppingList.length === 0
-        ? null
-        : this.props.ShoppingList.map((item, index) => {
+      this.props.ShoppingList.length === 0 ? (
+        <Message>
+          If you like a recipe, add the ingredients to your shopping list
+        </Message>
+      ) : (
+        <Auxilary>
+          <div className={classes.Container__TextContainer}>
+            <h2 className={classes.Container__TextContainer__Text}>
+              Shopping List
+            </h2>
+          </div>
+          {this.props.ShoppingList.map((item, index) => {
             return (
               <ListItem
                 key={index}
@@ -26,17 +37,10 @@ class ShoppingList extends Component {
                 }
               />
             );
-          });
-    return (
-      <div className={classes.Container}>
-        <div className={classes.Container__TextContainer}>
-          <h2 className={classes.Container__TextContainer__Text}>
-            Shopping List
-          </h2>
-        </div>
-        {output}
-      </div>
-    );
+          })}
+        </Auxilary>
+      );
+    return <div className={classes.Container}>{output}</div>;
   }
 }
 

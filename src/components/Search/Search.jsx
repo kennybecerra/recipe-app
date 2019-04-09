@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import searchLogo from "../../assets/svg/search.svg";
 import Icon from "../UI/Icon/Icon";
 import classes from "./Search.module.scss";
 import Favorites from "./favorites/favorites";

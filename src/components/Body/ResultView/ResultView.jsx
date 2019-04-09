@@ -4,6 +4,7 @@ import Auxilary from "../../../hoc/Auxilary/Auxilary";
 import Icon from "../../UI/Icon/Icon";
 import Ingredient from "./Ingredients/Ingredient";
 import Spinner from "./../../UI/Spinner/Spinner";
+import Message from "./../../UI/Message/Message";
 
 class ResultView extends Component {
   constructor(props) {
@@ -12,7 +13,9 @@ class ResultView extends Component {
   }
 
   render() {
-    let View = <p> Please click on an recipe result</p>;
+    let View = (
+      <Message>Click on a recipe result to view the recipe ingredients</Message>
+    ); // <p> Please click on an recipe result</p>;
 
     if (this.props.loading) {
       View = <Spinner />;

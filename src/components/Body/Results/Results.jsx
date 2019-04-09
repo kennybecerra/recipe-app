@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Result from "./Result/Result";
 import classes from "./Results.module.scss";
 import Spinner from "../../UI/Spinner/Spinner";
+import Message from "./../../UI/Message/Message";
 
 class Results extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class Results extends Component {
   ResultClickHandler = () => {};
 
   render() {
-    let Results = <p> Please search for an item</p>;
+    let Results = <Message>Search for a recipe to load all the results</Message>; // <p> Please search for an item</p>;
 
     if (this.props.loading) {
       Results = <Spinner />;

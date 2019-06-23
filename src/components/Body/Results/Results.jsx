@@ -1,8 +1,9 @@
-import React, { Component } from "react";
-import Result from "./Result/Result";
-import classes from "./Results.module.scss";
-import Spinner from "../../UI/Spinner/Spinner";
-import Message from "./../../UI/Message/Message";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Result from './Result/Result';
+import classes from './Results.module.scss';
+import Spinner from '../../UI/Spinner/Spinner';
+import Message from './../../UI/Message/Message';
 
 class Results extends Component {
   constructor(props) {
@@ -28,20 +29,20 @@ class Results extends Component {
             title={result.title}
             author={result.publisher}
             imageText={result.title}
-            handleRecipeSelect={() =>
-              this.props.handleRecipeSelect(result.recipe_id)
-            }
-            highlight={
-              this.props.recipe
-                ? this.props.recipe.recipe_id === result.recipe_id
-                : false
-            }
+            handleRecipeSelect={() => this.props.handleRecipeSelect(result.recipe_id)}
+            highlight={this.props.recipe ? this.props.recipe.recipe_id === result.recipe_id : false}
           />
         );
       });
     }
 
     return <div className={classes.Container}>{Results}</div>;
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    loadingResults: state.loadingResults
   }
 }
 

@@ -14,15 +14,16 @@
 
   &__MeasurementContainer {
     flex: 0 0 45%;
-    height: 100%;
 
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
 
+
     //border: 3px solid green;
 
     &__Amount {
+
       flex: 1 0 50%;
       display: flex;
       flex-direction: row;
@@ -58,14 +59,14 @@
         transition: all 0.4s ease;
 
         &__UpIcon {
-          height: 100%;
-          width: 100%;
+          height: 2rem;
+          width: 1rem;
           cursor: pointer;
         }
 
         &__DownIcon {
-          height: 100%;
-          width: 100%;
+          height: 2rem;
+          width: 1rem;
           cursor: pointer;
         }
       }

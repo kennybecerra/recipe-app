@@ -1,16 +1,19 @@
-import React, { Component } from "react";
-import Layout from "./components/Layout/Layout";
-import Search from "./components/Search/Search";
-import "./App.css";
-import Body from "./components/Body/Body";
-import axios from "axios";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Layout from './components/Layout/Layout';
+import Search from './components/Search/Search';
+import './App.css';
+import * as actionTypes from './store/actions/actionTypes';
+import * as actionsAsync from './store/actions/actionsAsync';
+import Body from './components/Body/Body';
+import axios from 'axios';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentSearch: "",
+      currentSearch: '',
       loadingResults: false,
       loadingRecipe: false,
       results: [],
@@ -19,31 +22,29 @@ class App extends Component {
       favorites: {},
       ShoppingList: []
     };
-
-    if ("previousSearch" in window.localStorage) {
-      this.state.results = JSON.parse(
-        window.localStorage.getItem("previousSearch")
-      );
-    }
-
-    if ("previousRecipe" in window.localStorage) {
-      this.state.recipe = JSON.parse(
-        window.localStorage.getItem("previousRecipe")
-      );
-    }
-
-    if ("favorites" in window.localStorage) {
-      this.state.favorites = JSON.parse(
-        window.localStorage.getItem("favorites")
-      );
-    }
-
-    if ("ShoppingList" in window.localStorage) {
-      this.state.ShoppingList = JSON.parse(
-        window.localStorage.getItem("ShoppingList")
-      );
-    }
     console.log(this.state);
+  }
+
+  componentDidMount() {
+    if ('previousSearch' in window.localStorage) {
+      // this.state.results = JSON.parse(window.localStorage.getItem('previousSearch'));
+      this.props.setResults(JSON.parse(window.localStorage.getItem('previousSearch')));
+    }
+
+    if ('previousRecipe' in window.localStorage) {
+      // this.state.recipe = JSON.parse(window.localStorage.getItem('previousRecipe'));
+      this.props.setRecipe(JSON.parse(window.localStorage.getItem('previousRecipe')));
+    }
+
+    if ('favorites' in window.localStorage) {
+      // this.state.favorites = JSON.parse(window.localStorage.getItem('favorites'));
+      this.props.setFavorites(JSON.parse(window.localStorage.getItem('favorites')));
+    }
+
+    if ('ShoppingList' in window.localStorage) {
+      // this.state.ShoppingList = JSON.parse(window.localStorage.getItem('ShoppingList'));
+      this.props.setShoppingList(JSON.parse(window.localStorage.getItem('ShoppingList')));
+    }
   }
 
   transformIngredients = ingredients => {
@@ -56,9 +57,9 @@ class App extends Component {
     let transformedIngredients = ingredients.map(val => {
       const transform = {
         amount: 1,
-        metric: "item",
-        description: "",
-        fullText: ""
+        metric: 'item',
+        description: '',
+        fullText: ''
       };
 
       // Fingure out Amounts
@@ -71,13 +72,11 @@ class App extends Component {
       } else {
         transform.amount = result[0]
           .trim()
-          .split(" ")
+          .split(' ')
           .map(value => {
             if (findFraction.test(value)) {
-              let numbers = value.split("/");
-              return parseFloat(
-                (parseInt(numbers[0], 10) / parseInt(numbers[1], 10)).toFixed(4)
-              );
+              let numbers = value.split('/');
+              return parseFloat((parseInt(numbers[0], 10) / parseInt(numbers[1], 10)).toFixed(4));
             } else {
               return parseInt(value);
             }
@@ -97,12 +96,12 @@ class App extends Component {
       }
 
       // Figure out description
-      transform.description = val.replace(findParenthesis, "");
-      transform.description = transform.description.replace(findNumbers, "");
-      transform.description = transform.description.replace(cleanBegining, "");
+      transform.description = val.replace(findParenthesis, '');
+      transform.description = transform.description.replace(findNumbers, '');
+      transform.description = transform.description.replace(cleanBegining, '');
 
       if (transform.description.length > 20) {
-        transform.description = transform.description.split(".")[0];
+        transform.description = transform.description.split('.')[0];
       }
 
       // Full text
@@ -114,175 +113,239 @@ class App extends Component {
     return transformedIngredients;
   };
 
-  handleAddToFavorites = () => {
-    let clone = null;
-    if (this.state.favorites[this.state.recipe.recipe_id]) {
-      clone = { ...this.state.favorites };
-      delete clone[this.state.recipe.recipe_id];
+  // handleAddToFavorites = () => {
+  //   let clone = null;
+  //   if (this.state.favorites[this.state.recipe.recipe_id]) {
+  //     clone = { ...this.state.favorites };
+  //     delete clone[this.state.recipe.recipe_id];
 
-      this.setState({
-        favorites: clone
-      });
-    } else {
-      clone = { ...this.state.favorites };
-      clone[this.state.recipe.recipe_id] = { ...this.state.recipe };
-      this.setState({
-        favorites: clone
-      });
-    }
+  //     this.setState({
+  //       favorites: clone
+  //     });
+  //   } else {
+  //     clone = { ...this.state.favorites };
+  //     clone[this.state.recipe.recipe_id] = { ...this.state.recipe };
+  //     this.setState({
+  //       favorites: clone
+  //     });
+  //   }
 
-    window.localStorage.setItem("favorites", JSON.stringify(clone));
-  };
+  //   window.localStorage.setItem('favorites', JSON.stringify(clone));
+  // };
 
-  handleServingChange = value => {
-    let newServings = this.state.servings;
-    if (value === "increment" && newServings < 20) {
-      newServings++;
-    } else if (value === "decrement" && newServings > 1) {
-      newServings--;
-    }
+  //updated
+  // handleServingChange = value => {
+  //   // let newServings = this.state.servings;
+  //   let newServings = this.props.servings;
+  //   if (value === 'increment' && newServings < 20) {
+  //     newServings++;
+  //   } else if (value === 'decrement' && newServings > 1) {
+  //     newServings--;
+  //   }
 
-    this.setState({
-      servings: newServings
-    });
-  };
+  //   // this.setState({
+  //   //   servings: newServings
+  //   // });
+  //   this.props.setServings(newServings);
+  // };
 
+  //updated
   handleSearchSubmit = value => {
-    this.setState({
-      currentSearch: value,
-      loadingResults: true
-    });
+    // this.setState({
+    //   currentSearch: value,
+    //   loadingResults: true
+    // });
+
+    this.props.searchResultsStart();
 
     axios
-      .get(
-        `https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q=${value}`
-      )
+      .get(`https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q=${value}`)
       .then(response => {
-        this.setState({
-          results: [...response.data.recipes],
-          loadingResults: false
-        });
+        // this.setState({
+        //   results: [...response.data.recipes],
+        //   loadingResults: false
+        // });
 
-        window.localStorage.setItem(
-          "previousSearch",
-          JSON.stringify(response.data.recipes)
-        );
+        this.props.setResults(response.data.recipes);
+        this.props.searchResultsSuccess();
+
+        window.localStorage.setItem('previousSearch', JSON.stringify(response.data.recipes));
       })
       .catch(err => {
-        console.log("There was an error", err);
+        console.log('There was an error', err);
       });
   };
 
+  // finished updatings
   handleRecipeSelect = id => {
-    this.setState({
-      loadingRecipe: true
-    });
+    // this.setState({
+    //   loadingRecipe: true
+    // });
+
+    this.props.searchRecipeStart();
 
     axios
-      .get(
-        `https://www.food2fork.com/api/get?key=97ace3f52f4192cd1500766f6c13eece&rId=${id}`
-      )
+      .get(`https://www.food2fork.com/api/get?key=97ace3f52f4192cd1500766f6c13eece&rId=${id}`)
       .then(response => {
-        console.log("this is the response");
+        console.log('this is the response');
         console.log(response.data.recipe);
 
         response.data.recipe.transformedIngredients = this.transformIngredients(
           response.data.recipe.ingredients
         );
         console.log(response.data.recipe);
-        this.setState({
-          recipe: { ...response.data.recipe },
-          loadingRecipe: false,
-          servings: 4
-        });
+        // this.setState({
+        //   recipe: { ...response.data.recipe },
+        //   loadingRecipe: false,
+        //   servings: 4
+        // });
 
-        window.localStorage.setItem(
-          "previousRecipe",
-          JSON.stringify(response.data.recipe)
-        );
+        this.props.setRecipe(response.data.recipe);
+        this.props.searchRecipeSuccess();
+        this.props.setServings(4);
+
+        window.localStorage.setItem('previousRecipe', JSON.stringify(response.data.recipe));
       })
       .catch(err => {
-        console.log("There was an error", err);
+        console.log('There was an error', err);
       });
   };
 
-  handleAddToShoppingList = () => {
-    //let list = [...this.state.recipe.transformedIngredients];
-    let list = this.state.recipe.transformedIngredients.map(item => {
-      let newItem = { ...item };
-      newItem.servings = this.state.servings;
-      return newItem;
-    });
-    list = this.state.ShoppingList.concat(list);
-    this.setState({ ShoppingList: list });
+  // handleAddToShoppingList = () => {
+  //   //let list = [...this.state.recipe.transformedIngredients];
+  //   let list = this.state.recipe.transformedIngredients.map(item => {
+  //     let newItem = { ...item };
+  //     newItem.servings = this.state.servings;
+  //     return newItem;
+  //   });
+  //   list = this.state.ShoppingList.concat(list);
+  //   this.setState({ ShoppingList: list });
 
-    window.localStorage.setItem("ShoppingList", JSON.stringify(list));
-  };
+  //   window.localStorage.setItem('ShoppingList', JSON.stringify(list));
+  // };
 
-  handleDeleteFromSchoppingList = index => {
-    let newList = [...this.state.ShoppingList];
-    newList.splice(index, 1);
-    this.setState({
-      ShoppingList: newList
-    });
+  // handleDeleteFromSchoppingList = index => {
+  //   let newList = [...this.state.ShoppingList];
+  //   newList.splice(index, 1);
+  //   this.setState({
+  //     ShoppingList: newList
+  //   });
 
-    //Sync with local Storage for access to current shoppinglist if page reloaded
-    window.localStorage.setItem("ShoppingList", JSON.stringify(newList));
-  };
+  //   //Sync with local Storage for access to current shoppinglist if page reloaded
+  //   window.localStorage.setItem('ShoppingList', JSON.stringify(newList));
+  // };
 
-  handleAmountChangeInShoppingList = (value, index) => {
-    let newList = [...this.state.ShoppingList];
-    if (value === "increase" && newList[index].servings < 20) {
-      newList[index].servings++;
-      this.setState({
-        ShoppingList: newList
-      });
-      window.localStorage.setItem("ShoppingList", JSON.stringify(newList));
-    } else if (value === "decrease" && newList[index].servings > 0) {
-      newList[index].servings--;
-      this.setState({
-        ShoppingList: newList
-      });
-      window.localStorage.setItem("ShoppingList", JSON.stringify(newList));
-    } else {
-      console.log("an Issue happened in the amount change selection : ", value);
-    }
-  };
+  // handleAmountChangeInShoppingList = (value, index) => {
+  //   let newList = [...this.state.ShoppingList];
+  //   if (value === 'increase' && newList[index].servings < 20) {
+  //     newList[index].servings++;
+  //     this.setState({
+  //       ShoppingList: newList
+  //     });
+  //     window.localStorage.setItem('ShoppingList', JSON.stringify(newList));
+  //   } else if (value === 'decrease' && newList[index].servings > 0) {
+  //     newList[index].servings--;
+  //     this.setState({
+  //       ShoppingList: newList
+  //     });
+  //     window.localStorage.setItem('ShoppingList', JSON.stringify(newList));
+  //   } else {
+  //     console.log('an Issue happened in the amount change selection : ', value);
+  //   }
+  // };
 
   render() {
     return (
       <Layout>
         <Body
-          results={this.state.results}
-          loadingResults={this.state.loadingResults}
-          loadingRecipe={this.state.loadingRecipe}
-          handleRecipeSelect={this.handleRecipeSelect}
-          recipe={this.state.recipe}
-          servings={this.state.servings}
-          handleServingChange={this.handleServingChange}
-          handleAddToFavorites={this.handleAddToFavorites}
-          handleAddToShoppingList={this.handleAddToShoppingList}
-          handleDeleteFromSchoppingList={this.handleDeleteFromSchoppingList}
-          handleAmountChangeInShoppingList={
-            this.handleAmountChangeInShoppingList
-          }
-          ShoppingList={this.state.ShoppingList}
-          favorites={this.state.favorites}
+          results={this.props.searchResults}
+          loadingResults={this.props.loadingResults}
+          loadingRecipe={this.props.loadingRecipe}
+          recipe={this.props.currentRecipe}
+          servings={this.props.servings}
+          handleServingChange={this.props.modifyServings}
+          handleAddToFavorites={this.props.modifyFavorites}
+          favorites={this.props.favorites}
+          ShoppingList={this.props.shoppingList}
+          handleAddToShoppingList={this.props.addToShoppingList}
+          handleDeleteFromSchoppingList={this.props.removeFromShoppingList}
+          handleAmountChangeInShoppingList={this.props.modifyWithinShoppingList}
+          handleRecipeSelect={this.props.onfetchRecipe}
+          // results={this.state.results}
+          // loadingResults={this.state.loadingResults}
+          // loadingRecipe={this.state.loadingRecipe}
+          // recipe={this.state.recipe}
+          // favorites={this.state.favorites}
+          // handleRecipeSelect={this.handleRecipeSelect}
+          // servings={this.state.servings}
+          // handleServingChange={this.handleServingChange}
+          // handleAddToFavorites={this.handleAddToFavorites}
+          // handleAddToShoppingList={this.handleAddToShoppingList}
+          // handleDeleteFromSchoppingList={this.handleDeleteFromSchoppingList}
+          // handleAmountChangeInShoppingList={this.handleAmountChangeInShoppingList}
+          // ShoppingList={this.state.ShoppingList}
         />
         <Search
-          handleSearch={this.handleSearchSubmit}
-          favorites={this.state.favorites}
-          handleRecipeSelect={this.handleRecipeSelect}
-          recipe={this.state.recipe}
-          handleDeleteFromSchoppingList={this.handleDeleteFromSchoppingList}
-          handleAmountChangeInShoppingList={
-            this.handleAmountChangeInShoppingList
-          }
-          ShoppingList={this.state.ShoppingList}
+          recipe={this.props.currentRecipe}
+          favorites={this.props.favorites}
+          ShoppingList={this.props.shoppingList}
+          handleAmountChangeInShoppingList={this.props.addToShoppingList}
+          handleDeleteFromSchoppingList={this.props.removeFromShoppingList}
+          handleSearch={this.props.onfetchResults}
+          handleRecipeSelect={this.props.onfetchRecipe}
+          // handleSearch={this.handleSearchSubmit}
+          //recipe={this.state.recipe}
+          // favorites={this.state.favorites}
+          // handleRecipeSelect={this.handleRecipeSelect}
+          // handleDeleteFromSchoppingList={this.handleDeleteFromSchoppingList}
+          // handleAmountChangeInShoppingList={this.handleAmountChangeInShoppingList}
+          // ShoppingList={this.state.ShoppingList}
         />
       </Layout>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    servings: state.servings,
+    favorites: state.favorites,
+    shoppingList: state.shoppingList,
+    searchResults: state.searchResults,
+    currentRecipe: state.currentRecipe,
+    loadingResults: state.loadingResults,
+    loadingRecipe: state.loadingRecipe
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setResults: results =>
+      dispatch({
+        type: actionTypes.SET_RESULTS,
+        results: results
+      }),
+    onfetchResults: value => dispatch(actionsAsync.fetchResults(value)),
+    onfetchRecipe: id => dispatch(actionsAsync.fetchRecipe(id)),
+    setServings: servings => dispatch({ type: actionTypes.SET_SERVINGS, servings: servings }),
+    modifyServings: value => dispatch({ type: actionTypes.MODIFY_SERVINGS, direction: value }),
+    setFavorites: favorites => dispatch({ type: actionTypes.SET_FAVORITES, favorites: favorites }),
+    modifyFavorites: () => dispatch({ type: actionTypes.MODIFY_FAVORITE }),
+    setRecipe: recipe => dispatch({ type: actionTypes.SET_RECIPE, recipe: recipe }),
+    searchResultsStart: () => dispatch({ type: actionTypes.LOAD_RESULTS_START }),
+    searchResultsSuccess: () => dispatch({ type: actionTypes.LOAD_RESULTS_SUCCESS }),
+    searchRecipeStart: () => dispatch({ type: actionTypes.LOAD_RECIPE_START }),
+    searchRecipeSuccess: () => dispatch({ type: actionTypes.LOAD_RECIPE_SUCCESS }),
+    addToShoppingList: () => dispatch({ type: actionTypes.ADD_TO_SHOPPINGLIST }),
+    removeFromShoppingList: index =>
+      dispatch({ type: actionTypes.REMOVE_FROM_SHOPPINGLIST, index }),
+    modifyWithinShoppingList: (direction, index) =>
+      dispatch({ type: actionTypes.MODIFY_WITHIN_SHOPPINGLIST, direction, index }),
+    setShoppingList: shoppingList => dispatch({ type: actionTypes.SET_SHOPPINGLIST, shoppingList })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

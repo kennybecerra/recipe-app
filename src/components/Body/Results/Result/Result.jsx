@@ -1,12 +1,12 @@
-import React from "react";
-import classes from "./Result.module.scss";
+import React from 'react';
+import classes from './Result.module.scss';
 
 const result = props => {
   return (
     <div
       className={classes.Container}
       onClick={props.handleRecipeSelect}
-      style={props.highlight ? { backgroundColor: "#eeeeee" } : {}}
+      style={props.highlight ? { backgroundColor: '#eeeeee' } : {}}
     >
       <div className={classes.Container__ImageContainer}>
         <img
@@ -16,12 +16,8 @@ const result = props => {
         />
       </div>
       <div className={classes.Container__TextContainer}>
-        <h4 className={classes.Container__TextContainer__Title}>
-          {props.title}
-        </h4>
-        <p className={classes.Container__TextContainer__Author}>
-          {props.author}
-        </p>
+        <h4 className={classes.Container__TextContainer__Title}>{props.title}</h4>
+        <p className={classes.Container__TextContainer__Author}>{props.author}</p>
       </div>
     </div>
   );

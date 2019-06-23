@@ -262,6 +262,10 @@
       transform: scale(1.1);
     }
 
+     &:focus {
+      outline: none;
+    }
+
     @include ResponsiveMobileFirst(tab-port) {
       width: 20rem;
     }

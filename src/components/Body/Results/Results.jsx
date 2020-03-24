@@ -13,24 +13,23 @@ class Results extends Component {
     };
   }
 
-  ResultClickHandler = () => {};
 
   render() {
-    let Results = <Message>Search for a recipe to load all the results</Message>; // <p> Please search for an item</p>;
+    let Results = <Message>Search for a recipe to load all the results</Message>;
 
     if (this.props.loading) {
       Results = <Spinner />;
     } else if (this.props.results.length !== 0) {
-      Results = this.props.results.map(result => {
+      Results = this.props.results.map((result, index) => {
         return (
           <Result
-            key={result.recipe_id}
-            image={result.image_url}
-            title={result.title}
-            author={result.publisher}
-            imageText={result.title}
-            handleRecipeSelect={() => this.props.handleRecipeSelect(result.recipe_id)}
-            highlight={this.props.recipe ? this.props.recipe.recipe_id === result.recipe_id : false}
+            key={index}
+            image={result.image}
+            title={result.label}
+            author={result.source}
+            imageText={result.label}
+            handleRecipeSelect={() => this.props.handleRecipeSelect(result.uri)}
+            highlight={this.props.recipe ? this.props.recipe.label === result.label : false}
           />
         );
       });

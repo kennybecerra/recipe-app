@@ -24,14 +24,14 @@ class ResultView extends Component {
         <Auxilary>
           <div className={classes.ImageContainer}>
             <img
-              src={this.props.recipe.image_url}
-              alt={this.props.recipe.title}
+              src={this.props.recipe.image}
+              alt={this.props.recipe.label}
               className={classes.ImageContainer__Image}
             />
           </div>
           <div className={classes.InfoContainer}>
             <span className={classes.InfoContainer__Caption}>
-              {this.props.recipe.title}
+              {this.props.recipe.label}
             </span>
             <div className={classes.InfoContainer__Time}>
               <Icon
@@ -69,7 +69,7 @@ class ResultView extends Component {
               <button className={classes.InfoContainer__Like__Button}>
                 <Icon
                   name={
-                    this.props.favorites[this.props.recipe.recipe_id]
+                    this.props.favorites[this.props.recipe.uri]
                       ? "heart-solid"
                       : "heart-outline"
                   }

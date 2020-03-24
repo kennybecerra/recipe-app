@@ -151,10 +151,6 @@ class App extends Component {
 
   //updated
   handleSearchSubmit = value => {
-    // this.setState({
-    //   currentSearch: value,
-    //   loadingResults: true
-    // });
 
     this.props.searchResultsStart();
 
@@ -271,19 +267,6 @@ class App extends Component {
           handleDeleteFromSchoppingList={this.props.removeFromShoppingList}
           handleAmountChangeInShoppingList={this.props.modifyWithinShoppingList}
           handleRecipeSelect={this.props.onfetchRecipe}
-          // results={this.state.results}
-          // loadingResults={this.state.loadingResults}
-          // loadingRecipe={this.state.loadingRecipe}
-          // recipe={this.state.recipe}
-          // favorites={this.state.favorites}
-          // handleRecipeSelect={this.handleRecipeSelect}
-          // servings={this.state.servings}
-          // handleServingChange={this.handleServingChange}
-          // handleAddToFavorites={this.handleAddToFavorites}
-          // handleAddToShoppingList={this.handleAddToShoppingList}
-          // handleDeleteFromSchoppingList={this.handleDeleteFromSchoppingList}
-          // handleAmountChangeInShoppingList={this.handleAmountChangeInShoppingList}
-          // ShoppingList={this.state.ShoppingList}
         />
         <Search
           recipe={this.props.currentRecipe}
@@ -293,13 +276,6 @@ class App extends Component {
           handleDeleteFromSchoppingList={this.props.removeFromShoppingList}
           handleSearch={this.props.onfetchResults}
           handleRecipeSelect={this.props.onfetchRecipe}
-          // handleSearch={this.handleSearchSubmit}
-          //recipe={this.state.recipe}
-          // favorites={this.state.favorites}
-          // handleRecipeSelect={this.handleRecipeSelect}
-          // handleDeleteFromSchoppingList={this.handleDeleteFromSchoppingList}
-          // handleAmountChangeInShoppingList={this.handleAmountChangeInShoppingList}
-          // ShoppingList={this.state.ShoppingList}
         />
       </Layout>
     );

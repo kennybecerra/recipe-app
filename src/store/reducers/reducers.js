@@ -81,12 +81,12 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.MODIFY_FAVORITE:
       let clone = null;
-      if (state.favorites[state.currentRecipe.recipe_id]) {
+      if (state.favorites[state.currentRecipe.uri]) {
         clone = { ...state.favorites };
-        delete clone[state.currentRecipe.recipe_id];
+        delete clone[state.currentRecipe.uri];
       } else {
         clone = { ...state.favorites };
-        clone[state.currentRecipe.recipe_id] = { ...state.currentRecipe };
+        clone[state.currentRecipe.uri] = { ...state.currentRecipe };
       }
 
       window.localStorage.setItem('favorites', JSON.stringify(clone));
@@ -97,7 +97,7 @@ const reducer = (state = initialState, action) => {
       };
 
     case actionTypes.ADD_TO_SHOPPINGLIST:
-      let list = state.currentRecipe.transformedIngredients.map(item => {
+        let list = state.currentRecipe.transformedIngredients.map(item => {
         let newItem = { ...item };
         newItem.servings = state.servings;
         return newItem;

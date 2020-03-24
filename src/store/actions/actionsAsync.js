@@ -1,5 +1,10 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
+
+const appID = "c1b32a1b";
+const appKey = "28df94bb2a109a95e4488d97d20181c9";
+const edamanURL = "https://api.edamam.com/search";
+
 // Action Creators : Async
 export const fetchResults = value => {
   return dispatch => {
@@ -7,19 +12,15 @@ export const fetchResults = value => {
     dispatch({ type: actionTypes.LOAD_RESULTS_START });
 
     axios
-      .get(`https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q=${value}`)
+      // .get(`https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q=${value}`)
+      .get(`${edamanURL}?q=${value}&app_id=${appID}&app_key=${appKey}`)
       .then(response => {
-        // this.setState({
-        //   results: [...response.data.recipes],
-        //   loadingResults: false
-        // });
+        
+        console.log(response)
 
-        // this.props.setResults(response.data.recipes);
-        // this.props.searchResultsSuccess();
+        dispatch({ type: actionTypes.LOAD_RESULTS_SUCCESS, results: response.data.hits.map( item => item.recipe)});
 
-        dispatch({ type: actionTypes.LOAD_RESULTS_SUCCESS, results: response.data.recipes });
-
-        window.localStorage.setItem('previousSearch', JSON.stringify(response.data.recipes));
+        window.localStorage.setItem('previousSearch', JSON.stringify( response.data.hits.map( item => item.recipe)));
       })
       .catch(err => {
         console.log('There was an error', err);
@@ -32,31 +33,24 @@ export const fetchRecipe = id => {
   return dispatch => {
     // this.props.searchRecipeStart();
     dispatch({ type: actionTypes.LOAD_RECIPE_START });
+    console.log(id)
 
     axios
-      .get(`https://www.food2fork.com/api/get?key=97ace3f52f4192cd1500766f6c13eece&rId=${id}`)
+      // .get(`https://www.food2fork.com/api/get?key=97ace3f52f4192cd1500766f6c13eece&rId=${id}`)
+      .get(`${edamanURL}?r=${encodeURIComponent(id)}&app_id=${appID}&app_key=${appKey}`)
       .then(response => {
-        console.log('this is the response');
-        console.log(response.data.recipe);
 
-        response.data.recipe.transformedIngredients = transformIngredients(
-          response.data.recipe.ingredients
+        response.data[0].transformedIngredients = transformIngredients(
+          response.data[0].ingredientLines
         );
-        console.log(response.data.recipe);
-        // this.setState({
-        //   recipe: { ...response.data.recipe },
-        //   loadingRecipe: false,
-        //   servings: 4
-        // });
 
-        dispatch({ type: actionTypes.LOAD_RECIPE_SUCCESS, recipe: response.data.recipe });
+        console.log(response);
+    
+
+        dispatch({ type: actionTypes.LOAD_RECIPE_SUCCESS, recipe: response.data[0] });
         dispatch({ type: actionTypes.SET_SERVINGS, servings: 4 });
 
-        // this.props.setRecipe(response.data.recipe);
-        // this.props.searchRecipeSuccess();
-        // this.props.setServings(4);
-
-        window.localStorage.setItem('previousRecipe', JSON.stringify(response.data.recipe));
+        window.localStorage.setItem('previousRecipe', JSON.stringify(response.data[0]));
       })
       .catch(err => {
         console.log('There was an error', err);

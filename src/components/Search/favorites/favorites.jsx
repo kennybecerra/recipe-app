@@ -41,18 +41,18 @@ class Favorites extends Component {
             false ? classes.alternate : ""
           }`}
         >
-          {Object.keys(this.props.favorites).map(recipeID => {
+          {Object.keys(this.props.favorites).map( (recipeID, index) => {
             return (
               <Favorite
                 key={recipeID}
-                image={this.props.favorites[recipeID].image_url}
-                title={this.props.favorites[recipeID].title}
-                author={this.props.favorites[recipeID].publisher}
-                imageText={this.props.favorites[recipeID].title}
+                image={this.props.favorites[recipeID].image}
+                title={this.props.favorites[recipeID].label}
+                author={this.props.favorites[recipeID].source}
+                imageText={this.props.favorites[recipeID].label}
                 handleRecipeSelect={() => {
                   this.props.handleRecipeSelect(recipeID);
                 }}
-                highlight={this.props.recipe.recipe_id === recipeID}
+                highlight={this.props.recipe.uri === recipeID}
               />
             );
           })}

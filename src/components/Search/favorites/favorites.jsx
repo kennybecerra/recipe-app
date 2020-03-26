@@ -50,7 +50,7 @@ class Favorites extends Component {
                 author={this.props.favorites[recipeID].source}
                 imageText={this.props.favorites[recipeID].label}
                 handleRecipeSelect={() => {
-                  this.props.handleRecipeSelect(recipeID);
+                  this.props.handleRecipeSelect(this.props.favorites[recipeID]);
                 }}
                 highlight={this.props.recipe.uri === recipeID}
               />

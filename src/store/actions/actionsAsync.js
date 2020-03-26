@@ -12,11 +12,8 @@ export const fetchResults = value => {
     dispatch({ type: actionTypes.LOAD_RESULTS_START });
 
     axios
-      // .get(`https://www.food2fork.com/api/search?key=97ace3f52f4192cd1500766f6c13eece&q=${value}`)
-      .get(`${edamanURL}?q=${value}&app_id=${appID}&app_key=${appKey}`)
+      .get(`${edamanURL}?q=${value}&to=60&app_id=${appID}&app_key=${appKey}`)
       .then(response => {
-        
-        console.log(response)
 
         dispatch({ type: actionTypes.LOAD_RESULTS_SUCCESS, results: response.data.hits.map( item => item.recipe)});
 
@@ -28,34 +25,20 @@ export const fetchResults = value => {
       });
   };
 };
-
-export const fetchRecipe = id => {
+// Originally an Async call, but now it is a sync call with no need to fetch data due to API change
+export const fetchRecipe = recipe => {
   return dispatch => {
-    // this.props.searchRecipeStart();
+
+    // Set loading status to show loading animation
     dispatch({ type: actionTypes.LOAD_RECIPE_START });
-    console.log(id)
+    // Use utility function to parse ingredient list and grab quantity and unit information via regex.
+    recipe.transformedIngredients = transformIngredients(recipe.ingredientLines);
 
-    axios
-      // .get(`https://www.food2fork.com/api/get?key=97ace3f52f4192cd1500766f6c13eece&rId=${id}`)
-      .get(`${edamanURL}?r=${encodeURIComponent(id)}&app_id=${appID}&app_key=${appKey}`)
-      .then(response => {
+    // Load clicked recipe as current recipe
+    dispatch({ type: actionTypes.LOAD_RECIPE_SUCCESS, recipe: recipe });
+    dispatch({ type: actionTypes.SET_SERVINGS, servings: recipe.yield });
 
-        response.data[0].transformedIngredients = transformIngredients(
-          response.data[0].ingredientLines
-        );
-
-        console.log(response);
-    
-
-        dispatch({ type: actionTypes.LOAD_RECIPE_SUCCESS, recipe: response.data[0] });
-        dispatch({ type: actionTypes.SET_SERVINGS, servings: 4 });
-
-        window.localStorage.setItem('previousRecipe', JSON.stringify(response.data[0]));
-      })
-      .catch(err => {
-        console.log('There was an error', err);
-        dispatch({ type: actionTypes.LOAD_RECIPE_FAIL });
-      });
+    window.localStorage.setItem('previousRecipe', JSON.stringify(recipe));
   };
 };
 

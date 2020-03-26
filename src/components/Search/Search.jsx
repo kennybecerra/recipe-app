@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as actionTypes from '../../store/actions/actionTypes';
+import * as actionsAsync from '../../store/actions/actionsAsync';
 import Icon from '../UI/Icon/Icon';
 import classes from './Search.module.scss';
 import Favorites from './favorites/favorites';
@@ -44,9 +46,9 @@ class Search extends Component {
               <div className={classes.InnerContainer__TextContainer}>
                 <h2 className={classes.InnerContainer__TextContainer__Text}>Shopping List</h2>
               </div>
-              {this.props.ShoppingList.length === 0
+              {this.props.shoppingList.length === 0
                 ? null
-                : this.props.ShoppingList.map((item, index) => {
+                : this.props.shoppingList.map((item, index) => {
                     return (
                       <ListItem
                         key={index}
@@ -88,4 +90,22 @@ class Search extends Component {
   }
 }
 
-export default Search;
+
+const mapStateToProps = state => {
+  return {
+    shoppingList: state.shoppingList,
+    recipe: state.currentRecipe,
+    favorites: state.favorites
+  }  
+}
+
+const mapDispatchToProps =  dispatch => {
+  return {
+    handleAmountChangeInShoppingList: () => dispatch({ type: actionTypes.ADD_TO_SHOPPINGLIST }),
+    handleDeleteFromSchoppingList: index => dispatch({ type: actionTypes.REMOVE_FROM_SHOPPINGLIST, index }),
+    handleSearch: value => dispatch(actionsAsync.fetchResults(value)),
+    handleRecipeSelect: id => dispatch(actionsAsync.fetchRecipe(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

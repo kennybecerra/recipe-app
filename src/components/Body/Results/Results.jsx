@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as actionsAsync from '../../../store/actions/actionsAsync';
 import Result from './Result/Result';
 import classes from './Results.module.scss';
 import Spinner from '../../UI/Spinner/Spinner';
@@ -28,7 +29,7 @@ class Results extends Component {
             title={result.label}
             author={result.source}
             imageText={result.label}
-            handleRecipeSelect={() => this.props.handleRecipeSelect(result.uri)}
+            handleRecipeSelect={() => this.props.handleRecipeSelect(result)}
             highlight={this.props.recipe ? this.props.recipe.label === result.label : false}
           />
         );
@@ -41,8 +42,16 @@ class Results extends Component {
 
 const mapStateToProps = state => {
   return {
-    loadingResults: state.loadingResults
+    loading: state.loadingResults,
+    results: state.searchResults,
+    recipe: state.currentRecipe
   }
 }
 
-export default Results;
+const mapDispatchToProps = dispatch => {
+  return {
+    handleRecipeSelect: recipe => dispatch(actionsAsync.fetchRecipe(recipe)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Results);

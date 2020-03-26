@@ -7,28 +7,9 @@ import ShoppingList from "./ShoppingList/ShoppingList";
 const body = props => {
   return (
     <div className={classes.Container}>
-      <ResultView
-        recipe={props.recipe}
-        servings={props.servings}
-        loading={props.loadingRecipe}
-        handleServingChange={props.handleServingChange}
-        handleAddToFavorites={props.handleAddToFavorites}
-        handleAddToShoppingList={props.handleAddToShoppingList}
-        favorites={props.favorites}
-      />
-      <Results
-        results={props.results}
-        loading={props.loadingResults}
-        handleRecipeSelect={props.handleRecipeSelect}
-        recipe={props.recipe}
-      />
-      <ShoppingList
-        ShoppingList={props.ShoppingList}
-        handleDeleteFromSchoppingList={props.handleDeleteFromSchoppingList}
-        handleAmountChangeInShoppingList={
-          props.handleAmountChangeInShoppingList
-        }
-      />
+      <ResultView/>
+      <Results />
+      <ShoppingList/>
     </div>
   );
 };

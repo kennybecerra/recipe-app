@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import {connect} from "react-redux";
+import * as actionTypes from '../../../store/actions/actionTypes';
 import classes from "./ShoppingList.module.scss";
 import ListItem from "./ListItem/ListItem";
 import Message from "./../../UI/Message/Message";
@@ -12,7 +14,7 @@ class ShoppingList extends Component {
 
   render() {
     let output =
-      this.props.ShoppingList.length === 0 ? (
+      this.props.shoppingList.length === 0 ? (
         <Message>
           If you like a recipe, add the ingredients to your shopping list
         </Message>
@@ -23,7 +25,7 @@ class ShoppingList extends Component {
               Shopping List
             </h2>
           </div>
-          {this.props.ShoppingList.map((item, index) => {
+          {this.props.shoppingList.map((item, index) => {
             return (
               <ListItem
                 key={index}
@@ -44,4 +46,17 @@ class ShoppingList extends Component {
   }
 }
 
-export default ShoppingList;
+const mapStateToProps = state => {
+  return {
+    shoppingList: state.shoppingList
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleDeleteFromSchoppingList: index => dispatch({ type: actionTypes.REMOVE_FROM_SHOPPINGLIST, index }),
+    handleAmountChangeInShoppingList: (direction, index) => dispatch({ type: actionTypes.MODIFY_WITHIN_SHOPPINGLIST, direction, index })
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingList);

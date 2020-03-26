@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import {connect} from "react-redux";
+import * as actionTypes from '../../../store/actions/actionTypes';
 import classes from "./ResultView.module.scss";
 import Auxilary from "../../../hoc/Auxilary/Auxilary";
 import Icon from "../../UI/Icon/Icon";
@@ -112,4 +114,23 @@ class ResultView extends Component {
   }
 }
 
-export default ResultView;
+
+const mapStateToProps = state => {
+  return {
+    recipe: state.currentRecipe,
+    servings: state.servings,
+    loading: state.loadingRecipe,
+    favorites: state.favorites,
+  }  
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleServingChange : (direction) =>  dispatch({ type: actionTypes.MODIFY_SERVINGS, direction: direction}),
+    handleAddToFavorites: () => dispatch({ type: actionTypes.MODIFY_FAVORITE}),
+    handleAddToShoppingList: () => dispatch({type: actionTypes.ADD_TO_SHOPPINGLIST})
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResultView);

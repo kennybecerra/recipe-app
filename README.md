@@ -9,6 +9,12 @@ A modern, responsive React application for discovering and managing recipes with
 
 ![Website Screenshot](https://github.com/kennybecerra/recipe-app/blob/master/src/assets/images/RecipeApp.png "Recipe App")
 
+## 🔗 Links
+
+- **Live Demo**: [Recipe App](https://kennybecerra.github.io/recipe-app/)
+- **API Documentation**: [Tasty API](https://rapidapi.com/apidojo/api/tasty)
+- **Repository**: [GitHub](https://github.com/kennybecerra/recipe-app)
+
 ## ✨ Features
 
 - **🔍 Recipe Search**: Search through thousands of recipes using the Tasty API
@@ -95,12 +101,6 @@ This project has been comprehensively modernized with the following improvements
 - ✅ Proper error handling and validation
 - ✅ Modern ES6+ syntax throughout
 - ✅ Component-level TypeScript interfaces
-
-## 🔗 Links
-
-- **Live Demo**: [Recipe App](https://kennybecerra.github.io/recipe-app/)
-- **API Documentation**: [Tasty API](https://rapidapi.com/apidojo/api/tasty)
-- **Repository**: [GitHub](https://github.com/kennybecerra/recipe-app)
 
 ---
 

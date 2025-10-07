@@ -4,14 +4,14 @@ import Results from "./Results/Results";
 import ResultView from "./ResultView/ResultView";
 import ShoppingList from "./ShoppingList/ShoppingList";
 
-const body = props => {
+const Body: React.FC = () => {
   return (
     <div className={classes.Container}>
-      <ResultView/>
+      <ResultView />
       <Results />
-      <ShoppingList/>
+      <ShoppingList />
     </div>
   );
 };
 
-export default body;
+export default Body;

@@ -1,8 +1,20 @@
+import type { AppState } from "@/store/reducers/reducers";
 import React from "react";
-import classes from "./ListItem.module.scss";
 import Icon from "./../../../UI/Icon/Icon";
+import classes from "./ListItem.module.scss";
 
-const ListItem = props => {
+type ListItem = AppState["shoppingList"][number];
+
+interface ListItemProps extends ListItem {
+  index: number;
+  handleDeleteFromShoppingList: (index: number) => void;
+  handleAmountChangeInShoppingList: (
+    direction: "increase" | "decrease",
+    index: number
+  ) => void;
+}
+
+const ListItem: React.FC<ListItemProps> = (props) => {
   return (
     <div className={classes.ListItem}>
       <div className={classes.ListItem__MeasurementContainer}>
@@ -38,14 +50,14 @@ const ListItem = props => {
         </div>
       </div>
       <div className={classes.ListItem__TextContainer}>
-        <p>{props.description}</p>
+        <p>{props.name}</p>
       </div>
       <div className={classes.ListItem__ButtonContainer}>
         <Icon
           className={classes.ListItem__ButtonContainer__Icon}
           name="close-outline"
           onClick={() => {
-            props.handleDeleteFromSchoppingList(props.index);
+            props.handleDeleteFromShoppingList(props.index);
           }}
         />
       </div>

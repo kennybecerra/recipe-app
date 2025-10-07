@@ -1,5 +1,5 @@
-@import "../../../sass/mixins.scss";
-@import "../../../sass/variables.scss";
+@use "../../../sass/variables.scss" as *;
+@use "../../../sass/mixins.scss" as *;
 
 .Container {
   height: 100%;

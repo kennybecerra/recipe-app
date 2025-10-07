@@ -1,4 +1,4 @@
-@import "../../../sass/variables.scss";
+@use "../../../sass/variables.scss" as *;
 
 .Container {
   width: 100%;

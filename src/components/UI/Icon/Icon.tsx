@@ -1,7 +1,14 @@
 import React from "react";
 import Auxilary from "../../../hoc/Auxilary/Auxilary";
 
-const Icon = ({ name = "", className = "", ...props }) => (
+interface IconProps {
+  name: string;
+  className?: string;
+  onClick?: () => void;
+  [key: string]: any;
+}
+
+const Icon: React.FC<IconProps> = ({ name = "", className = "", ...props }) => (
   <svg
     {...props}
     className={className}
@@ -15,7 +22,7 @@ const Icon = ({ name = "", className = "", ...props }) => (
 
 export default Icon;
 
-const getViewBox = name => {
+const getViewBox = (name: string): string => {
   switch (name) {
     case "heart-outline":
       return "0 0 28 28";
@@ -54,7 +61,7 @@ const getViewBox = name => {
   }
 };
 
-const getPath = name => {
+const getPath = (name: string): React.ReactNode => {
   switch (name) {
     case "heart-outline":
       return (

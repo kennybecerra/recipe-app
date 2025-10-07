@@ -1,111 +1,115 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actionTypes from '../../store/actions/actionTypes';
-import * as actionsAsync from '../../store/actions/actionsAsync';
-import Icon from '../UI/Icon/Icon';
-import classes from './Search.module.scss';
-import Favorites from './favorites/favorites';
-import Modal from './../UI/Modal/Modal';
-import ListItem from './../Body/ShoppingList/ListItem/ListItem';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../store";
+import * as actionTypes from "../../store/actions/actionTypes";
+import * as actionsAsync from "../../store/actions/actionsAsync";
+import Icon from "../UI/Icon/Icon";
+import ListItem from "./../Body/ShoppingList/ListItem/ListItem";
+import Modal from "./../UI/Modal/Modal";
+import classes from "./Search.module.scss";
+import Favorites from "./favorites/favorites";
 
-class Search extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: false
-    };
-  }
+const Search: React.FC = () => {
+  // Local state
+  const [show, setShow] = useState(false);
+  const [value, setValue] = useState("");
 
-  handleChange = event => {
-    this.setState({ value: event.target.value });
+  // Redux hooks
+  const shoppingList = useSelector((state: RootState) => state.shoppingList);
+  const recipe = useSelector((state: RootState) => state.currentRecipe);
+  const favorites = useSelector((state: RootState) => state.favorites);
+  const dispatch = useDispatch<AppDispatch>();
+
+  // Event handlers
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
   };
 
-  handleSubmit = event => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    this.props.handleSearch(this.state.value);
+    dispatch(actionsAsync.fetchResults(value));
   };
 
-  handleModalToggle = () => {
-    let newShow = !this.state.show;
-    this.setState({
-      show: newShow
-    });
+  const handleModalToggle = () => {
+    setShow(!show);
   };
 
-  render() {
-    return (
-      <div className={classes.Container}>
-        <div className={classes.CartContainer}>
-          <Icon
-            name='cart'
-            className={classes.CartContainer__Icon}
-            onClick={this.handleModalToggle}
-          />
-          <Modal show={this.state.show} toggleModal={this.handleModalToggle}>
-            <div className={classes.InnerContainer}>
-              <div className={classes.InnerContainer__TextContainer}>
-                <h2 className={classes.InnerContainer__TextContainer__Text}>Shopping List</h2>
-              </div>
-              {this.props.shoppingList.length === 0
-                ? null
-                : this.props.shoppingList.map((item, index) => {
-                    return (
-                      <ListItem
-                        key={index}
-                        index={index}
-                        {...item}
-                        handleDeleteFromSchoppingList={this.props.handleDeleteFromSchoppingList}
-                        handleAmountChangeInShoppingList={
-                          this.props.handleAmountChangeInShoppingList
-                        }
-                      />
-                    );
-                  })}
+  const handleDeleteFromShoppingList = (index: number) => {
+    dispatch({ type: actionTypes.REMOVE_FROM_SHOPPINGLIST, index });
+  };
+
+  const handleAmountChangeInShoppingList = () => {
+    dispatch({ type: actionTypes.ADD_TO_SHOPPINGLIST });
+  };
+
+  const handleRecipeSelect = (selectedRecipe: any) => {
+    dispatch(actionsAsync.fetchRecipe(selectedRecipe));
+  };
+
+  return (
+    <div className={classes.Container}>
+      <div className={classes.CartContainer}>
+        <Icon
+          name="cart"
+          className={classes.CartContainer__Icon}
+          onClick={handleModalToggle}
+        />
+        <Modal show={show} toggleModal={handleModalToggle}>
+          <div className={classes.InnerContainer}>
+            <div className={classes.InnerContainer__TextContainer}>
+              <h2 className={classes.InnerContainer__TextContainer__Text}>
+                Shopping List
+              </h2>
             </div>
-          </Modal>
-        </div>
-
-        <form onSubmit={this.handleSubmit} className={classes.FormContainer}>
-          <input
-            type='text'
-            className={classes.FormContainer__TextField}
-            onChange={this.handleChange}
-            placeholder='Search over 1,000,000 recipes and more ....'
-          />
-          <button className={classes.FormContainer__ButtonField}>
-            <Icon name='search' className={classes.FormContainer__ButtonField__Icon} />
-            <span className={classes.FormContainer__ButtonField__Text}>SEARCH</span>
-          </button>
-        </form>
-
-        <div className={classes.FavoritesContainer}>
-          <Favorites
-            favorites={this.props.favorites}
-            handleRecipeSelect={this.props.handleRecipeSelect}
-            recipe={this.props.recipe}
-          />
-        </div>
+            {shoppingList.length === 0
+              ? null
+              : shoppingList.map((item, index) => {
+                  return (
+                    <ListItem
+                      key={index}
+                      index={index}
+                      {...item}
+                      handleDeleteFromShoppingList={
+                        handleDeleteFromShoppingList
+                      }
+                      handleAmountChangeInShoppingList={
+                        handleAmountChangeInShoppingList
+                      }
+                    />
+                  );
+                })}
+          </div>
+        </Modal>
       </div>
-    );
-  }
-}
 
+      <form onSubmit={handleSubmit} className={classes.FormContainer}>
+        <input
+          type="text"
+          className={classes.FormContainer__TextField}
+          onChange={handleChange}
+          value={value}
+          placeholder="Search over 1,000,000 recipes and more ...."
+        />
+        <button className={classes.FormContainer__ButtonField}>
+          <Icon
+            name="search"
+            className={classes.FormContainer__ButtonField__Icon}
+          />
+          <span className={classes.FormContainer__ButtonField__Text}>
+            SEARCH
+          </span>
+        </button>
+      </form>
 
-const mapStateToProps = state => {
-  return {
-    shoppingList: state.shoppingList,
-    recipe: state.currentRecipe,
-    favorites: state.favorites
-  }  
-}
+      <div className={classes.FavoritesContainer}>
+        <Favorites
+          favorites={favorites}
+          handleRecipeSelect={handleRecipeSelect}
+          recipe={recipe}
+        />
+      </div>
+    </div>
+  );
+};
 
-const mapDispatchToProps =  dispatch => {
-  return {
-    handleAmountChangeInShoppingList: () => dispatch({ type: actionTypes.ADD_TO_SHOPPINGLIST }),
-    handleDeleteFromSchoppingList: index => dispatch({ type: actionTypes.REMOVE_FROM_SHOPPINGLIST, index }),
-    handleSearch: value => dispatch(actionsAsync.fetchResults(value)),
-    handleRecipeSelect: id => dispatch(actionsAsync.fetchRecipe(id))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default Search;

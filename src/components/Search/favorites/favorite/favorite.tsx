@@ -1,7 +1,16 @@
 import React from "react";
 import classes from "./favorite.module.scss";
 
-const favorite = props => {
+interface FavoriteProps {
+  image: string;
+  title: string;
+  author: string;
+  imageText: string;
+  handleRecipeSelect: () => void;
+  highlight: boolean;
+}
+
+const Favorite: React.FC<FavoriteProps> = (props) => {
   return (
     <div
       className={classes.Container}
@@ -27,4 +36,4 @@ const favorite = props => {
   );
 };
 
-export default favorite;
+export default Favorite;

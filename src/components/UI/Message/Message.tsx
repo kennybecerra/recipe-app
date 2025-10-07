@@ -1,10 +1,14 @@
 import React from "react";
 import classes from "./Message.module.scss";
 
-const Message = props => {
+interface MessageProps {
+  children: React.ReactNode;
+}
+
+const Message: React.FC<MessageProps> = ({ children }) => {
   return (
     <div className={classes.Container}>
-      <p className={classes.Container__Message}>{props.children}</p>
+      <p className={classes.Container__Message}>{children}</p>
     </div>
   );
 };

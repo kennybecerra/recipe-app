@@ -1,10 +1,6 @@
-import { searchRecipes } from "@/api/recipe";
+import { searchRecipes } from "../../api/recipe";
 import { Recipe } from "../reducers/reducers";
 import * as actionTypes from "./actionTypes";
-
-const appID = "c1b32a1b";
-const appKey = "28df94bb2a109a95e4488d97d20181c9";
-const edamanURL = "https://api.edamam.com/search";
 
 // Action Creators : Async
 export const fetchResults = (value: string) => {
@@ -37,7 +33,7 @@ export const fetchRecipe = (recipe: Recipe) => {
 
     // Load clicked recipe as current recipe
     dispatch({ type: actionTypes.LOAD_RECIPE_SUCCESS, recipe: recipe });
-    dispatch({ type: actionTypes.SET_SERVINGS, servings: recipe?.yield || 4 });
+    dispatch({ type: actionTypes.SET_SERVINGS, servings: 4 }); // Default to 4 servings
 
     window.localStorage.setItem("previousRecipe", JSON.stringify(recipe));
   };

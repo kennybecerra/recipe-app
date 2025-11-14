@@ -50,7 +50,7 @@ const App: React.FC = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const [selectedKeys, setSelectedKeys] = useState<string[]>(["home"]);
+	const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
 	const [collapsed, setCollapsed] = useState(false);
 	const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
@@ -76,11 +76,42 @@ const App: React.FC = () => {
 		return () => window.removeEventListener("resize", handleResize);
 	}, [dispatch]);
 
-	// Clear selected menu keys when on recipe detail page
+	// Set selected menu keys based on current route
 	useEffect(() => {
-		if (location.pathname.startsWith("/recipe/")) {
-			setSelectedKeys([]);
+		const path = location.pathname;
+
+		if (path === "/") {
+			setSelectedKeys(["home"]);
+			return;
 		}
+
+		if (path === "/search") {
+			setSelectedKeys(["search"]);
+			return;
+		}
+
+		if (path === "/favorites") {
+			setSelectedKeys(["favorites"]);
+			return;
+		}
+
+		if (path.startsWith("/recipe/")) {
+			setSelectedKeys([]);
+			return;
+		}
+
+		// Tag pages (ID-based routes)
+		const tagId = path.replace("/", "");
+		if (tagId) {
+			const iDNum = Number.parseInt(tagId);
+			if (!Number.isNaN(iDNum)) {
+				setSelectedKeys([tagId]);
+				return;
+			}
+		}
+
+		// Default fallback
+		setSelectedKeys([]);
 	}, [location.pathname]);
 
 	const menuItems: MenuItem[] = [

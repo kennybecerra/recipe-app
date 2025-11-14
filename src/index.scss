@@ -39,3 +39,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+h1,
+h2,
+h3,
+h4.h4,
+h5,
+h6 {
+  color: #0c181e;
+}
+
+p {
+  color: #73767e;
+  font-weight: 500;
+}
+
+// Antd overrides
+// aside.ant-layout-sider {
+//   padding-bottom: 0px;
+// }
+
+.ant-layout-sider-trigger {
+  // position: inherit !important;
+}
+
+div.ant-skeleton.ant-skeleton-element:has(> div.ant-skeleton-image) {
+  width: 100%;
+  aspect-ratio: 1;
+}

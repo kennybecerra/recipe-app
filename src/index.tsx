@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import App from "./App";
 import "./index.scss";
 import "./sass/main.scss";
+import { BrowserRouter } from "react-router";
 import * as serviceWorker from "./serviceWorker";
 import { store } from "./store";
 
@@ -12,11 +13,13 @@ if (!container) throw new Error("Failed to find the root element");
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>
+	<React.StrictMode>
+		<Provider store={store}>
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
+		</Provider>
+	</React.StrictMode>,
 );
 
 // If you want your app to work offline and load faster, you can change

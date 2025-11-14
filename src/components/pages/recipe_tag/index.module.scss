@@ -1,0 +1,87 @@
+@import "../../../sass/mixins.scss";
+
+.container {
+  padding: 15px;
+  gap: 10px;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  overflow: auto;
+
+  height: 100%;
+  width: 100%;
+
+  @include ResponsiveMobileFirst(tablet) {
+    padding: 20px;
+    gap: 15px;
+  }
+
+  @include ResponsiveMobileFirst(desktop) {
+    padding: 30px 40px;
+    gap: 20px;
+  }
+}
+
+.recipeCard {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 40px;
+}
+
+.emptyContent {
+  text-align: center;
+  max-width: 500px;
+  animation: fadeIn 0.4s ease-in-out;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.emptyIcon {
+  font-size: 72px;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+.emptyContent h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.emptyContent p {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.emptySubtext {
+  font-size: 14px;
+  color: #999;
+  margin-top: 4px;
+}

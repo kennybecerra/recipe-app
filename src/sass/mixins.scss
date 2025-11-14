@@ -2,33 +2,33 @@
 
 // RESPONSIVE DESKTOP FIRST DESIGN
 /*
--- 600px        : phone
-600px - 900px   : tab
-900x -1200px    : tab-port
+-- 480px        : phone/mobile
+480px - 768px   : mobile-tablet
+768px - 1200px  : tablet-desktop
 1200px - 1800px : NORMAL DEFAULT CSS
 1800px+         : big-desktop
 */
 
 /* BREAK POINTS*/
-// $tablet: 600px;
-// $tablet-port: 900px;
-// $desktop: 1200px;
-// $big-desktop: 1800px;
+// $mobile: 480px (30em)
+// $tablet: 768px (48em)
+// $desktop: 1200px (75em)
+// $big-desktop: 1800px (112.5em)
 
 @mixin ResponsiveDesktopFirst($breakpoint) {
-  @if $breakpoint == phone {
-    @media (max-width: 37.5em) {
+  @if $breakpoint == mobile {
+    @media (max-width: 30em) {
       @content;
     }
   }
 
-  @if $breakpoint == tab-port {
-    @media (max-width: 56.25em) {
+  @if $breakpoint == tablet {
+    @media (max-width: 48em) {
       @content;
     }
   }
 
-  @if $breakpoint == tab-land {
+  @if $breakpoint == desktop {
     @media (max-width: 75em) {
       @content;
     }
@@ -45,21 +45,21 @@
 
 // RESPONSIVE MOBILE FIRST DESIGN BREAKPOINTS
 /*
-600px - 900px  : tab
-900px - 1200px : tab-port
-1200px -1800px : desktop
-1800px+        : big-desktop
+480px+  : mobile
+768px+  : tablet
+1200px+ : desktop
+1800px+ : big-desktop
 */
 
 @mixin ResponsiveMobileFirst($breakpoint) {
-  @if $breakpoint == tab {
-    @media (min-width: 37.5em) {
+  @if $breakpoint == mobile {
+    @media (min-width: 30em) {
       @content;
     }
   }
 
-  @if $breakpoint == tab-port {
-    @media (min-width: 56.25em) {
+  @if $breakpoint == tablet {
+    @media (min-width: 48em) {
       @content;
     }
   }

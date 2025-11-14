@@ -1,19 +1,26 @@
-import { applyMiddleware, compose, createStore } from "redux";
-import { thunk } from "redux-thunk";
-import rootReducer from "./store/reducers/reducers";
+import { configureStore } from "@reduxjs/toolkit";
+import {
+	type TypedUseSelectorHook,
+	useDispatch,
+	useSelector,
+} from "react-redux";
+import currentRecipeReducer from "./store/slices/currentRecipeSlice";
+import favoritesReducer from "./store/slices/favoritesSlice";
+import recipesReducer from "./store/slices/recipesSlice";
+import shoppingListReducer from "./store/slices/shoppingListSlice";
 
-declare global {
-  interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-  }
-}
+export const store = configureStore({
+	reducer: {
+		recipes: recipesReducer,
+		currentRecipe: currentRecipeReducer,
+		favorites: favoritesReducer,
+		shoppingList: shoppingListReducer,
+	},
+	devTools: process.env.NODE_ENV !== "production",
+});
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-export const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
-);
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

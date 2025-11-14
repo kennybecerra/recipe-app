@@ -1,40 +1,36 @@
-import { searchRecipes } from "../../api/recipe";
-import { Recipe } from "../reducers/reducers";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { getRecipes, type Recipe } from "../../api/recipe";
+import type { Tag } from "../../api/types";
 import * as actionTypes from "./actionTypes";
 
-// Action Creators : Async
-export const fetchResults = (value: string) => {
-  return (dispatch: any) => {
-    // this.props.searchResultsStart();
-    dispatch({ type: actionTypes.LOAD_RESULTS_START });
+// Redux Toolkit Async Thunks
+export const fetchResults = createAsyncThunk(
+	"recipes/fetchResults",
+	async (query: string) => {
+		const recipes = await getRecipes({ query, from: 0, size: 20 });
+		window.localStorage.setItem("previousSearch", JSON.stringify(recipes));
+		return recipes;
+	},
+);
 
-    searchRecipes(value)
-      .then((recipes) => {
-        dispatch({
-          type: actionTypes.LOAD_RESULTS_SUCCESS,
-          results: recipes,
-        });
+export const fetchRecipesWithTags = createAsyncThunk(
+	"recipes/fetchRecipesWithTags",
+	async (params: {
+		query?: string;
+		from?: number;
+		size?: number;
+		tags?: Tag["name"][];
+	}) => {
+		const recipes = await getRecipes(params);
+		return recipes;
+	},
+);
 
-        window.localStorage.setItem("previousSearch", JSON.stringify(recipes));
-      })
-      .catch((err) => {
-        console.log("There was an error", err);
-        dispatch({ type: actionTypes.LOAD_RESULTS_FAIL });
-      });
-  };
-};
-// Originally an Async call, but now it is a sync call with no need to fetch data due to API change
-export const fetchRecipe = (recipe: Recipe) => {
-  return (dispatch: any) => {
-    // Set loading status to show loading animation
-    dispatch({ type: actionTypes.LOAD_RECIPE_START });
-    // Use utility function to parse ingredient list and grab quantity and unit information via regex.
-    // recipe.transformedIngredients = transformIngredients(recipe.ingredients);
-
-    // Load clicked recipe as current recipe
-    dispatch({ type: actionTypes.LOAD_RECIPE_SUCCESS, recipe: recipe });
-    dispatch({ type: actionTypes.SET_SERVINGS, servings: 4 }); // Default to 4 servings
-
-    window.localStorage.setItem("previousRecipe", JSON.stringify(recipe));
-  };
-};
+export const fetchRecipe = createAsyncThunk(
+	"recipes/fetchRecipe",
+	async (recipe: Recipe, { dispatch }) => {
+		dispatch({ type: actionTypes.SET_SERVINGS, servings: 4 }); // Default to 4 servings
+		window.localStorage.setItem("previousRecipe", JSON.stringify(recipe));
+		return recipe;
+	},
+);

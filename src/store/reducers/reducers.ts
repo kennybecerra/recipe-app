@@ -1,11 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import type { Recipe } from "@/api/recipe";
-import {
-	fetchRecipe,
-	fetchRecipesWithTags,
-	fetchResults,
-} from "../actions/actionsAsync";
-import * as actionTypes from "../actions/actionTypes";
+import { fetchRecipesWithTags } from "../actions/actionsAsync";
 
 export interface ShoppingListItem {
 	recipeID: number;

@@ -27,7 +27,6 @@ import RecipeTag from "./components/pages/recipe_tag";
 import Search from "./components/pages/search";
 import Container from "./components/UI/Container/Container";
 import type { AppDispatch, RootState } from "./store";
-import * as actionTypes from "./store/actions/actionTypes";
 import { setFavorites } from "./store/slices/favoritesSlice";
 import {
 	applianceTags,
